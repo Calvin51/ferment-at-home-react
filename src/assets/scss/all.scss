@@ -1,0 +1,26 @@
+// @import "../../node_modules/bootstrap/scss/functions";
+@import 'bootstrap/scss/functions';
+@import "./utils/variables";
+@import "bootstrap/scss/bootstrap";
+// @import "../../node_modules/bootstrap.scss";
+
+//加入自訂義utilities區塊
+$utilities: map-merge($utilities,
+    ( //設定文字響應式
+      "font-size": map-merge(map-get($utilities, "font-size"),
+        (responsive: true,
+        ))));
+
+// @import "../../node_modules/bootstrap/scss/utilities/api";
+
+@import "./base/base.scss";
+
+@import "./layout/header";
+@import "./layout/footer";
+
+
+@import "./pages/index";
+@import "./pages/products";
+@import "./pages/shopcart";
+@import "./pages/fqa";
+@import "./pages/packageResult";
