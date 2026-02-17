@@ -4,6 +4,7 @@ import About from "./views/front/About";
 import Fqa from "./views/front/Fqa";
 import FrontEndLayout from "./layout/FrontEndLayout";
 import Home from "./views/front/Home";
+import Cart from "./views/front/Cart";
 
 
 export const routes = createHashRouter([
@@ -27,7 +28,11 @@ export const routes = createHashRouter([
             {
                 path: "/fqa",
                 element: <Fqa />
-            }
+            },
+            {
+                path: "/cart",
+                element: <Cart />
+            },
         ]
     },
 ])
