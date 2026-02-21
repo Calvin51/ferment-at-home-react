@@ -48,7 +48,6 @@ const Cart = () => {
         getPopProduct()
     }, [])
 
-
     const updateCart = async (cartId, num) => {
         try {
             const res = await axios.put(
