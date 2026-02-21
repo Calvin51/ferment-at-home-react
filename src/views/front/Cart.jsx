@@ -6,12 +6,13 @@ import redDelet from "../../assets/images/Delete-red.svg"
 import pizzaHawaii from "../../assets/images/pizza-hawaii.png"
 import cheesepizza from "../../assets/images/pizza-cheese.png"
 import shoppingCart from "../../assets/images/Shopping-Cart-1-Line--Streamline-Mingcute.svg"
+import downline from"../../assets/images/Down-Line--Streamline-Mingcute.svg"
+import upline from"../../assets/images/Up-Line--Streamline-Mingcute.svg"
 import { useEffect, useState } from "react"
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { Pagination } from "swiper/modules";
 import axios from "axios"
 
 const APIUrl = "https://ferment-at-home-data.onrender.com/"
@@ -87,10 +88,10 @@ const Cart = () => {
                             <ul
                                 className="list-unstyled p-5 border border-4 border-secondary-300 rounded-3"
                             >
-                                {cartList.map((item) => {
+                                {cartList.map((item, index) => {
                                     return (
                                         <li
-                                            className="d-flex align-items-center border-bottom gap-5 py-5 px-8"
+                                            className={`d-flex align-items-center ${index === cartList.length - 1 ? "border-bottom" : ""}border-bottom gap-5 py-5 px-8`}
                                             key={item.id}>
                                             <img
                                                 src={pizzaHawaii}
@@ -163,9 +164,9 @@ const Cart = () => {
                 </div>
                 {/* 手機版  */}
                 <ul className="container text-center list-unstyled -0 d-lg-none">
-                    {cartList.map((phoneitem) => {
+                    {cartList.map((phoneitem, index) => {
                         return (
-                            <li className="border-bottom pt-3 pb-5 px-3">
+                            <li className={`${index !== cartList.length - 1 ? "border-bottom" : ""} pt-3 pb-5 px-3`}>
                                 {/* 產品 */}
                                 <div className="d-flex gap-3 align-items-center mb-3">
                                     <img
@@ -223,7 +224,11 @@ const Cart = () => {
                 <div className="swiper shopCart container px-5 position-relative">
                     {/* Slides */}
                     <Swiper
-                        modules={[Pagination]}
+                        modules={[Navigation]}
+                        navigation={{
+                            prevEl: ".swiper-button-prev",
+                            nextEl: ".swiper-button-next",
+                        }}
                         spaceBetween={24}
                         slidesPerView={1}
                         breakpoints={{
@@ -234,7 +239,6 @@ const Cart = () => {
                                 slidesPerView: 4,
                             },
                         }}
-                        className="swiper-wrapper"
                     >
                         {popList.map((popItem) => (
                             <SwiperSlide key={popItem.id} className="swiper-slide popProduct">
@@ -310,6 +314,52 @@ const Cart = () => {
                     </button>
                 </div>
             </section>
+
+            {/* 結帳區 */}
+            <div className="fixed-bottom shop-shadow bg-secondary d-lg-none rounded-top">
+                <div className="p-4">
+                    {/* 應付金額區 */}
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div className="mb-4">
+                            <div className="fs-9">應付金額</div>
+                            <button
+                                className="btn btn-link p-0 fs-11 text-gray-700"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#payDetail"
+                            >
+                                付款明細<span className="ms-1"
+                                ><img
+                                        src={downline}
+                                        alt="展開"
+                                        className="arrow-down" />
+                                    <img
+                                        src={upline}
+                                        alt="收合"
+                                        className="arrow-up"
+                                    /></span>
+                            </button>
+                        </div>
+                        <div className="fs-5 text-primary section-title">NT$ 1,140</div>
+                    </div>
+
+                    {/* 收合內容佔滿版 */}
+                    <div className="collapse my-4" id="payDetail">
+                        <div className="w-100">
+                            <div className="text-gray-950 fs-9 d-flex justify-content-between mb-2">
+                                <span>小計</span><span>NT$ 1,040</span>
+                            </div>
+                            <div className="text-gray-950 fs-9 d-flex justify-content-between">
+                                <span>運費</span><span>NT$ 100</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 確認付款按鈕 */}
+                    <button className="btn-filled-primary" style={{width: "100%"}} type="button">
+                        確認付款
+                    </button>
+                </div>
+            </div>
 
 
 
