@@ -35,7 +35,7 @@ export const routes = createHashRouter([
                 element: <Cart />
             },
             {
-                path: "/orderdetails",
+                path: "/orderdetails/:id",
                 element: <OrderDetails />
             },
         ]
