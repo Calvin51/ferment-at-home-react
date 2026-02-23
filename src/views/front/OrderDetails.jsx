@@ -1,10 +1,23 @@
 import lineSmall from "../../assets/images/line-small.png"
-import pizzaHawaii from "../../assets/images/pizza-hawaii.png"
+import pizzaHawaii from "../../assets/images/pizza-hawaii.png";
+import pizzaCheese from "../../assets/images/pizza-cheese.png";
+import pizzaMargaret from "../../assets/images/pizza-margaret.png";
+import pizzaMeat from "../../assets/images/pizza-meat.png";
+import pizzaSeafood from "../../assets/images/pizza-seafood.png";
+import pizzaCustomerized from "../../assets/images/pizza-customerized.png";
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useParams } from "react-router-dom"
 
-const APIUrl = "https://ferment-at-home-data.onrender.com/"
+const APIUrl = "https://ferment-at-home-data.onrender.com/";
+const productImages = {
+  "夏威夷披薩": pizzaHawaii,
+  "起司三重奏": pizzaCheese,
+  "瑪格麗特披薩": pizzaMargaret,
+  "全肉總匯": pizzaMeat,
+  "海鮮總匯": pizzaSeafood,
+  "客製化披薩": pizzaCustomerized
+};
 
 
 const OrderDetails = () => {
@@ -109,7 +122,7 @@ const OrderDetails = () => {
                             orderProduct.map((product) => {
                                 return (
                                     <li className="d-flex align-items-center gap-5" key={product.id}>
-                                        <img src={pizzaHawaii} alt={product.name}
+                                        <img src={product.name?productImages[product.name]:productImages["客製化披薩"]} alt={product.name}
                                             style={{ width: 160, height: 160 }} />
                                         <div className="text-start" style={{ width: 308 }}>
                                             <p className="fw-bold fs-7">{product.name}（{product.size}）</p>
@@ -124,42 +137,6 @@ const OrderDetails = () => {
                             })
                         }
                     </ul>
-                    {/* <ul className="list-unstyled">
-                        <li className="d-flex align-items-center gap-5">
-                            <img src={pizzaHawaii} alt="夏威夷披薩"
-                                style={{ width: 160, height: 160 }} />
-                            <div className="text-start" style={{ width: 308 }}>
-                                <p className="fw-bold fs-7">夏威夷披薩（6寸）</p>
-                            </div>
-                            <div style={{ width: 100 }}>
-                                <h5 className="section-title">X1</h5>
-                            </div>
-                            <h5 className="text-primary section-title">NT$260</h5>
-                        </li>
-                        <li className="d-flex align-items-center gap-5">
-                            <img src={cheesepizza} alt="夏威夷披薩"
-                                style={{ width: 160, height: 160 }} />
-                            <div className="text-start" style={{ width: 308 }}>
-                                <p className="fw-bold fs-7">夏威夷披薩（6寸）</p>
-                            </div>
-                            <div style={{ width: 100 }}>
-                                <h5 className="section-title">X1</h5>
-                            </div>
-                            <h5 className="text-primary section-title">NT$260</h5>
-                        </li>
-                        <li className="d-flex align-items-center gap-5">
-                            <img src={pizzaHawaii} alt="夏威夷披薩"
-                                style={{ width: 160, height: 160 }} />
-                            <div className="text-start" style={{ width: 308 }}>
-                                <p className="fw-bold fs-7">夏威夷披薩（6寸）</p>
-                            </div>
-                            <div style={{ width: 100 }}>
-                                <h5 className="section-title">X1</h5>
-                            </div>
-                            <h5 className="text-primary section-title">NT$260</h5>
-                        </li>
-
-                    </ul> */}
 
                 </div>
                 {/* Customer Information */}
@@ -317,7 +294,7 @@ const OrderDetails = () => {
                             orderProduct.map((product,index) => {
                                 return (
                                     <li className="d-flex align-items-center gap-5 px-3 pt-3 pb-5 border-bottom border-gray-100" key={index}>
-                                        <img src={pizzaHawaii} alt={product.name}
+                                        <img src={product.name?productImages[product.name]:productImages["客製化披薩"]} alt={product.name}
                                             style={{ width: 120, height: 120 }} />
                                         <div className="d-flex flex-column  text-start">
                                             <p className="fw-bold fs-7">{product.name}（{product.size}）</p>

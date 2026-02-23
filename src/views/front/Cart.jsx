@@ -4,7 +4,11 @@ import plus from "../../assets/images/plus.svg";
 import trashcan from "../../assets/images/trashcan.svg";
 import redDelet from "../../assets/images/Delete-red.svg";
 import pizzaHawaii from "../../assets/images/pizza-hawaii.png";
-import cheesepizza from "../../assets/images/pizza-cheese.png";
+import pizzaCheese from "../../assets/images/pizza-cheese.png";
+import pizzaMargaret from "../../assets/images/pizza-margaret.png";
+import pizzaMeat from "../../assets/images/pizza-meat.png";
+import pizzaSeafood from "../../assets/images/pizza-seafood.png";
+import pizzaCustomerized from "../../assets/images/pizza-customerized.png";
 import shoppingCart from "../../assets/images/Shopping-Cart-1-Line--Streamline-Mingcute.svg";
 import downline from "../../assets/images/Down-Line--Streamline-Mingcute.svg";
 import upline from "../../assets/images/Up-Line--Streamline-Mingcute.svg";
@@ -16,6 +20,14 @@ import "swiper/css/navigation";
 import axios from "axios";
 
 const APIUrl = "https://ferment-at-home-data.onrender.com/";
+const productImages = {
+  "夏威夷披薩": pizzaHawaii,
+  "起司三重奏": pizzaCheese,
+  "瑪格麗特披薩": pizzaMargaret,
+  "全肉總匯": pizzaMeat,
+  "海鮮總匯": pizzaSeafood,
+  "客製化披薩": pizzaCustomerized
+};
 
 const Cart = () => {
   const [cartList, setCartList] = useState([]);
@@ -89,13 +101,13 @@ const Cart = () => {
                       key={item.id}
                     >
                       <img
-                        src={pizzaHawaii}
+                        src={item.title?productImages[item.title]:productImages["客製化披薩"]}
                         alt={item.title}
                         style={{ width: 160, height: 160 }}
                       />
                       <div style={{ width: 218 }}>
                         <h7 className="fw-bold fs-7">
-                          {item.title}（{item.size}）
+                          {item.title?item.title:"客製化披薩"}（{item.size}）
                         </h7>
                       </div>
                       <div
@@ -171,13 +183,13 @@ const Cart = () => {
                 {/* 產品 */}
                 <div className="d-flex gap-3 align-items-center mb-3">
                   <img
-                    src={pizzaHawaii}
+                    src={phoneitem.title?productImages[phoneitem.title]:productImages["客製化披薩"]}
                     alt={phoneitem.title}
                     style={{ width: 120, height: 120 }}
                   />
                   <div>
                     <h7 className="fw-bold fs-7">
-                      {phoneitem.title}（{phoneitem.size}）
+                      {phoneitem.title?phoneitem.title:"客製化披薩"}（{phoneitem.size}）
                     </h7>
                     <h5 className="text-primary section-title text-start">
                       NT${phoneitem.price}
@@ -251,7 +263,7 @@ const Cart = () => {
                   {/* 產品圖   */}
                   <div className="text-center">
                     <img
-                      src={cheesepizza}
+                      src={productImages[popItem.name]}
                       className="card-img-top"
                       style={{ width: 258 }}
                       alt={popItem.name}
