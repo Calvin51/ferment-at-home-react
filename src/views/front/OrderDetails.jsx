@@ -1,10 +1,21 @@
 import lineSmall from "../../assets/images/line-small.png"
 import pizzaHawaii from "../../assets/images/pizza-hawaii.png"
+import pizzaCheese from "../../assets/images/pizza-cheese.png"
+import pizzaMargaret from "../../assets/images/pizza-margaret.png"
+import pizzaMeat from "../../assets/images/pizza-meat.png"
+import pizzaSeafood from "../../assets/images/pizza-seafood.png"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useParams } from "react-router-dom"
 
-const APIUrl = "https://ferment-at-home-data.onrender.com/"
+const APIUrl = "https://ferment-at-home-data.onrender.com/";
+const productImages = {
+    "夏威夷披薩": pizzaHawaii,
+    "起司三重奏": pizzaCheese,
+    "瑪格麗特披薩": pizzaMargaret,
+    "全肉總匯": pizzaMeat,
+    "海鮮總匯": pizzaSeafood,
+  };
 
 
 const OrderDetails = () => {
@@ -109,7 +120,7 @@ const OrderDetails = () => {
                             orderProduct.map((product) => {
                                 return (
                                     <li className="d-flex align-items-center gap-5" key={product.id}>
-                                        <img src={pizzaHawaii} alt={product.name}
+                                        <img src={productImages[product.name]} alt={product.name}
                                             style={{ width: 160, height: 160 }} />
                                         <div className="text-start" style={{ width: 308 }}>
                                             <p className="fw-bold fs-7">{product.name}（{product.size}）</p>
