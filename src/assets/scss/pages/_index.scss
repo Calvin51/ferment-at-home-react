@@ -1,5 +1,5 @@
 .hero-bg {
-  background-image: url("/assets/images/hero_bg.png");
+  background-image: url("../../images/hero_bg.png");
   background-size: cover;
 }
 
@@ -40,7 +40,7 @@
   padding-top: 9.5px;
   padding-bottom: 9.5px;
 }
-.cursor{
+.cursor {
   cursor: pointer;
 }
 
@@ -76,7 +76,7 @@
 
 .wave-line {
   height: 30px;
-  background-image: url("/assets/images/curved-line.svg");
+  background-image: url("../../images/curved-line.svg");
 }
 
 .story-image {
@@ -104,7 +104,7 @@
 }
 
 .painting-quartetCard-outline {
-  background-image: url("/assets/images/card_quartet_pc_34.svg");
+  background-image: url("../../images/card_quartet_pc_34.svg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
@@ -112,7 +112,7 @@
 
 @media (max-width: 576px) {
   .painting-quartetCard-outline {
-    background-image: url("/assets/images/card-border-sm.png");
+    background-image: url("../../images/card-border-sm.png");
   }
 }
 
@@ -240,7 +240,7 @@
 }
 
 .moment-border {
-  background-image: url("/assets/images/card-border-moment.png");
+  background-image: url("../../images/card-border-moment.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
