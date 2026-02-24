@@ -6,6 +6,7 @@ import FrontEndLayout from "./layout/FrontEndLayout";
 import Home from "./views/front/Home";
 import Cart from "./views/front/Cart";
 import OrderDetails from "./views/front/OrderDetails";
+import Checkout from "./views/front/Checkout";
 
 
 export const routes = createHashRouter([
@@ -38,6 +39,10 @@ export const routes = createHashRouter([
                 path: "/orderdetails",
                 element: <OrderDetails />
             },
+            {
+                path: "/checkout",
+                element: <Checkout />
+            }
         ]
     },
 ])
