@@ -1,0 +1,23 @@
+.answer-font {
+    font-family: "Darumadrop One", sans-serif;
+    font-size: 3.5rem;
+    color: $primary;
+    position: relative;
+}
+
+.text-font {
+    font-family: "Darumadrop One", sans-serif;
+    font-size: 1.75rem;
+}
+
+.form-checked {
+    border: none;
+    border-radius: 0;
+
+    @media (min-width: 992px) {
+        border: 4px solid var(--bs-secondary-300);
+        border-radius: 0.5rem;
+        max-width: 876px;
+        margin: 0 auto; // 置中
+    }
+}
