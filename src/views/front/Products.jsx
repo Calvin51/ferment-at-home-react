@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import lineSmall from "../../assets/images/line-small.png";
-import check from "../../assets/images/Check-2-Fill--Streamline-Mingcute-Fill - gray.svg";
+import check from "../../assets/images/Check-2-Fill--Streamline-Mingcute-Fill.svg";
 import sourceGreen from "../../assets/images/sauce-01.png";
 import sourceWhite from "../../assets/images/sauce-02.png";
 import sourceRed from "../../assets/images/sauce-03.png";
@@ -72,61 +72,21 @@ const Products = () => {
   const [selectedToppingCombos, setSelectedToppingCombos] = useState([]);
 
   // useEffect 取得資料
-  useEffect(() => {
-    const getSauces = async () => {
-      try {
-        const res = await axios.get(`${APIUrl}sauces`);
-        setSauceList(res.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    getSauces();
-  }, []);
-  useEffect(() => {
-    const getPizzaSizes = async () => {
-      try {
-        const res = await axios.get(`${APIUrl}pizzaSizes`);
-        setPizzaSizesList(res.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    getPizzaSizes();
-  }, []);
-  useEffect(() => {
-    const getPizzaCrusts = async () => {
-      try {
-        const res = await axios.get(`${APIUrl}pizzaCrusts`);
-        setPizzaCrustsList(res.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    getPizzaCrusts();
-  }, []);
-  useEffect(() => {
-    const getCheeseTypes = async () => {
-      try {
-        const res = await axios.get(`${APIUrl}cheeseTypes`);
-        setCheeseTypesList(res.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    getCheeseTypes();
-  }, []);
 
   useEffect(() => {
-    const getToppingCombos = async () => {
+    const getProducts = async () => {
       try {
-        const res = await axios.get(`${APIUrl}toppingCombos`);
-        setToppingCombosList(res.data);
+        const res = await axios.get(`${APIUrl}pickProducts`);
+        setSauceList(res.data.sauces);
+        setPizzaSizesList(res.data.pizzaSizes);
+        setPizzaCrustsList(res.data.pizzaCrusts);
+        setCheeseTypesList(res.data.cheeseTypes);
+        setToppingCombosList(res.data.toppingCombos);
       } catch (error) {
         console.log(error.message);
       }
     };
-    getToppingCombos();
+    getProducts();
   }, []);
 
   return (
@@ -167,23 +127,21 @@ const Products = () => {
                   <div className="col-12 col-md-4" key={sauce.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
-                        selectedSauce === sauce.id
-                          ? "border border-2 border-primary"
-                          : ""
+                        selectedSauce === sauce.id ? "bg-secondary-100" : ""
                       }`}
                       style={{ cursor: "pointer" }}
                       onClick={() => setSelectedSauce(sauce.id)}
                     >
                       <div>
                         <div className="card-photo justify-content-center">
-                          <div className="card-check rounded-4">
+                          <div
+                            className={`card-check rounded-4 ${
+                              selectedSauce === sauce.id ? "bg-primary" : ""
+                            }`}
+                          >
                             <a
                               href="/products#/products"
-                              className={
-                                selectedSauce === sauce.id
-                                  ? "check text-white active"
-                                  : "check text-white"
-                              }
+                              className="check text-white"
                             >
                               <img src={check} alt="打勾圖示" />
                             </a>
@@ -232,7 +190,7 @@ const Products = () => {
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
                         selectedPizzaSizes === pizzaSizes.id
-                          ? "border border-2 border-primary"
+                          ? "bg-secondary-100"
                           : ""
                       }`}
                       style={{ cursor: "pointer" }}
@@ -243,14 +201,16 @@ const Products = () => {
                           <h2 className="selling-price section-title">
                             +{pizzaSizes.price}
                           </h2>
-                          <div className="card-check rounded-4">
+                          <div
+                            className={`card-check rounded-4 ${
+                              selectedPizzaSizes === pizzaSizes.id
+                                ? "bg-primary"
+                                : ""
+                            }`}
+                          >
                             <a
-                              href="#"
-                              className={
-                                selectedPizzaSizes === pizzaSizes.id
-                                  ? "check text-white active"
-                                  : "check text-white"
-                              }
+                              href="/products#/products"
+                              className="check text-white"
                             >
                               <img src={check} alt="打勾圖示" />
                             </a>
@@ -283,21 +243,23 @@ const Products = () => {
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
                         selectedPizzaCrusts === pizzaCrusts.id
-                          ? "border border-2 border-primary"
+                          ? "bg-secondary-100"
                           : ""
                       }`}
                       style={{ cursor: "pointer" }}
                       onClick={() => setSelectedPizzaCrusts(pizzaCrusts.id)}
                     >
                       <div className="card-photo justify-content-center">
-                        <div className="card-check rounded-4">
+                        <div
+                          className={`card-check rounded-4 ${
+                            selectedPizzaCrusts === pizzaCrusts.id
+                              ? "bg-primary"
+                              : ""
+                          }`}
+                        >
                           <a
-                            href="#"
-                            className={
-                              selectedPizzaCrusts === pizzaCrusts.id
-                                ? "check text-white active"
-                                : "check text-white"
-                            }
+                            href="/products#/products"
+                            className="check text-white"
                           >
                             <img src={check} alt="打勾圖示" />
                           </a>
@@ -329,21 +291,23 @@ const Products = () => {
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
                         selectedCheeseTypes === cheeseTypes.id
-                          ? "border border-2 border-primary"
+                          ? "bg-secondary-100"
                           : ""
                       }`}
                       style={{ cursor: "pointer" }}
                       onClick={() => setSelectedCheeseTypes(cheeseTypes.id)}
                     >
                       <div className="card-photo justify-content-center">
-                        <div className="card-check rounded-4">
+                        <div
+                          className={`card-check rounded-4  ${
+                            selectedCheeseTypes === cheeseTypes.id
+                              ? "bg-primary"
+                              : ""
+                          }`}
+                        >
                           <a
-                            href="#"
-                            className={
-                              selectedCheeseTypes === cheeseTypes.id
-                                ? "check text-white active"
-                                : "check text-white"
-                            }
+                            href="/products#/products"
+                            className="check text-white"
                           >
                             <img src={check} alt="打勾圖示" />
                           </a>
@@ -392,7 +356,7 @@ const Products = () => {
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
                         selectedToppingCombos === toppingCombos.id
-                          ? "border border-2 border-primary"
+                          ? "bg-secondary-100"
                           : ""
                       }`}
                       style={{ cursor: "pointer" }}
@@ -402,14 +366,16 @@ const Products = () => {
                         <h2 className="selling-price section-title">
                           +{toppingCombos.price}
                         </h2>
-                        <div className="card-check rounded-4">
+                        <div
+                          className={`card-check rounded-4 ${
+                            selectedToppingCombos === toppingCombos.id
+                              ? "bg-primary"
+                              : ""
+                          }`}
+                        >
                           <a
-                            href="#"
-                            className={
-                              selectedToppingCombos === toppingCombos.id
-                                ? "check text-white active"
-                                : "check text-white"
-                            }
+                            href="/products#/products"
+                            className="check text-white"
                           >
                             <img src={check} alt="打勾圖示" />
                           </a>
