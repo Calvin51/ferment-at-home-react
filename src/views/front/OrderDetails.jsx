@@ -126,7 +126,7 @@ const OrderDetails = () => {
                             orderProduct.map((product) => {
                                 return (
                                     <li className="d-flex align-items-center gap-5" key={product.id}>
-                                        <img src={product.name ? productImages[product.name] : productImages["客製化披薩"]} alt={product.name}
+                                        <img src={productImages[product.name]} alt={product.name}
                                             style={{ width: 160, height: 160 }} />
                                         <div className="text-start" style={{ width: 308 }}>
                                             <p className="fw-bold fs-7">{product.name}（{product.size}）</p>
@@ -134,7 +134,7 @@ const OrderDetails = () => {
                                         <div style={{ width: 100 }}>
                                             <h5 className="section-title">X{product.qty}</h5>
                                         </div>
-                                        <h5 className="text-primary section-title">NT${product.subtotal}</h5>
+                                        <h5 className="text-primary section-title">NT${product.price*product.qty}</h5>
                                     </li>
 
                                 )
@@ -298,12 +298,12 @@ const OrderDetails = () => {
                             orderProduct.map((product, index) => {
                                 return (
                                     <li className="d-flex align-items-center gap-5 px-3 pt-3 pb-5 border-bottom border-gray-100" key={index}>
-                                        <img src={product.name ? productImages[product.name] : productImages["客製化披薩"]} alt={product.name}
+                                        <img src={productImages[product.name]} alt={product.name}
                                             style={{ width: 120, height: 120 }} />
                                         <div className="d-flex flex-column  text-start">
                                             <p className="fw-bold fs-7">{product.name}（{product.size}）</p>
                                             <h5 className="section-title">X{product.qty}</h5>
-                                            <h5 className="text-primary section-title">NT${product.subtotal}</h5>
+                                            <h5 className="text-primary section-title">NT${product.price*product.qty}</h5>
                                         </div>
                                     </li>
 
