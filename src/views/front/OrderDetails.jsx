@@ -8,15 +8,16 @@ import pizzaCustomerized from "../../assets/images/pizza-customerized.png";
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useParams } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const APIUrl = "https://ferment-at-home-data.onrender.com/";
 const productImages = {
-  "夏威夷披薩": pizzaHawaii,
-  "起司三重奏": pizzaCheese,
-  "瑪格麗特披薩": pizzaMargaret,
-  "全肉總匯": pizzaMeat,
-  "海鮮總匯": pizzaSeafood,
-  "客製化披薩": pizzaCustomerized
+    "夏威夷披薩": pizzaHawaii,
+    "起司三重奏": pizzaCheese,
+    "瑪格麗特披薩": pizzaMargaret,
+    "全肉總匯披薩": pizzaMeat,
+    "海鮮總匯披薩": pizzaSeafood,
+    "客製化披薩": pizzaCustomerized
 };
 
 
@@ -45,46 +46,49 @@ const OrderDetails = () => {
     return (
         <section className="container-fluid text-center mt-lg-10 mt-6 mb-lg-11">
             {/* 標題 */}
-            <div className="container mb-lg-11 mb-7 position-relative">
-                <button type="button" className="position-absolute start-0">
+            <div className="container mt-11 position-relative">
+                   <Link
+                    to="/orders"
+                    className="position-absolute start-0 top-50 d-flex align-items-center text-decoration-none text-dark">
                     <span className="fs-8">←</span>
                     <span className="fs-8 d-none d-lg-inline">回到訂單列表</span>
-                </button>
+                    </Link>
 
-                <h2 className="section-title fs-2 fs-lg-1 text-primary text-center">
-                    Order Details
-                </h2>
-
-                <div className="mt-4 text-center">
-                    <img src={lineSmall} alt="線" />
-                </div>
-
+                    <h2 className="section-title fs-2 fs-lg-1 text-primary text-center">
+                        Order Details
+                    </h2>
             </div>
+            <div className="mt-4 text-center mb-lg-11 mb-7">
+                        <img src={lineSmall} alt="線" />
+                    </div>
             {/* 電腦版訂單內容 */}
             <div className="container d-none d-lg-block border border-4 border-secondary-300 rounded-3">
                 {/* 訂單狀態 */}
-                <div className="row m-lg-8 gap-lg-5 justify-content-center">
-                    <div className="col text-center border-top border-secondary-300 border-5"
-                    >
-                        <p className="pt-3 fs-9">訂單成立</p>
+                {detail && (
+                    <div className="row m-lg-8 gap-lg-5 justify-content-center">
+                        <div className={`col text-center border-top-8 ${detail.status === "訂單成立" ? "border-secondary-300" : "border-gray-100"}`}
+                        >
+                            <p className="pt-3 fs-9">訂單成立</p>
+                        </div>
+                        <div className={`col text-center border-top-8 ${detail.status === "配送中" ? "border-secondary-300" : "border-gray-100"}`}
+                        >
+                            <p className="pt-3 fs-9">配送中</p>
+                        </div>
+                        <div className={`col text-center border-top-8 ${detail.status === "理貨中" ? "border-secondary-300" : "border-gray-100"}`}
+                        >
+                            <p className="pt-3 fs-9">理貨中</p>
+                        </div>
+                        <div className={`col text-center border-top-8 ${detail.status === "已到貨" ? "border-secondary-300" : "border-gray-100"}`}
+                        >
+                            <p className="pt-3 fs-9">已到貨</p>
+                        </div>
+                        <div className={`col text-center border-top-8 ${detail.status === "已收貨" ? "border-secondary-300" : "border-gray-100"}`}
+                        >
+                            <p className="pt-3 fs-9">已收貨</p>
+                        </div>
                     </div>
-                    <div className="col text-center border-top border-gray-100 border-5"
-                    >
-                        <p className="pt-3 fs-9">配送中</p>
-                    </div>
-                    <div className="col text-center border-top border-gray-100 border-5"
-                    >
-                        <p className="pt-3 fs-9">理貨中</p>
-                    </div>
-                    <div className="col text-center border-top border-gray-100 border-5"
-                    >
-                        <p className="pt-3 fs-9">已到貨</p>
-                    </div>
-                    <div className="col text-center border-top border-gray-100 border-5"
-                    >
-                        <p className="pt-3 fs-9">已收貨</p>
-                    </div>
-                </div>
+
+                )}
                 {/* 訂單編號 */}
                 {detail && (
                     <div className=" mb-8 mx-8">
@@ -122,7 +126,7 @@ const OrderDetails = () => {
                             orderProduct.map((product) => {
                                 return (
                                     <li className="d-flex align-items-center gap-5" key={product.id}>
-                                        <img src={product.name?productImages[product.name]:productImages["客製化披薩"]} alt={product.name}
+                                        <img src={product.name ? productImages[product.name] : productImages["客製化披薩"]} alt={product.name}
                                             style={{ width: 160, height: 160 }} />
                                         <div className="text-start" style={{ width: 308 }}>
                                             <p className="fw-bold fs-7">{product.name}（{product.size}）</p>
@@ -217,19 +221,19 @@ const OrderDetails = () => {
                     <div className="mb-5">
                         <h5 className="section-title fs-lg-5 text-primary text-start">Payment Details</h5>
                     </div>
-                    {detail&&(
+                    {detail && (
                         <ul className="list-unstyled">
-                        <li className="text-gray-950 fs-8 d-flex justify-content-between mb-3">
-                            <span>商品總金額</span><span>NT$ {detail.amount.productsTotal}</span>
-                        </li>
-                        <li className="text-gray-950 fs-8 d-flex justify-content-between mb-3">
-                            <span>運費</span><span>NT$ {detail.amount.shippingFee}</span>
-                        </li>
-                        <li className="text-gray-950 d-flex justify-content-between">
-                            <span className="fs-8">總付款金額</span>
-                            <h5 className="fs-5 text-primary section-title">NT$ {detail.amount.grandTotal}</h5>
-                        </li>
-                    </ul>
+                            <li className="text-gray-950 fs-8 d-flex justify-content-between mb-3">
+                                <span>商品總金額</span><span>NT$ {detail.amount.productsTotal}</span>
+                            </li>
+                            <li className="text-gray-950 fs-8 d-flex justify-content-between mb-3">
+                                <span>運費</span><span>NT$ {detail.amount.shippingFee}</span>
+                            </li>
+                            <li className="text-gray-950 d-flex justify-content-between">
+                                <span className="fs-8">總付款金額</span>
+                                <h5 className="fs-5 text-primary section-title">NT$ {detail.amount.grandTotal}</h5>
+                            </li>
+                        </ul>
                     )}
                 </div>
             </div >
@@ -237,28 +241,28 @@ const OrderDetails = () => {
             {/* 手機版訂單內容 */}
             <div className="container d-lg-none ">
                 {/* 訂單狀態 */}
-                <div className="row gap-2 justify-content-center mb-7">
-                    <div className="col text-center border-top border-secondary-300 border-5"
+                {detail && (<div className="row gap-2 justify-content-center mb-7">
+                    <div className={`col text-center border-top-8 ${detail.status === "訂單成立" ? "border-secondary-300" : "border-gray-100"}`}
                     >
                         <p className="pt-3 fs-11">訂單成立</p>
                     </div>
-                    <div className="col text-center border-top border-gray-100 border-5"
+                    <div className={`col text-center border-top-8 ${detail.status === "配送中" ? "border-secondary-300" : "border-gray-100"}`}
                     >
                         <p className="pt-3 fs-11">配送中</p>
                     </div>
-                    <div className="col text-center border-top border-gray-100 border-5"
+                    <div className={`col text-center border-top-8 ${detail.status === "理貨中" ? "border-secondary-300" : "border-gray-100"}`}
                     >
                         <p className="pt-3 fs-11">理貨中</p>
                     </div>
-                    <div className="col text-center border-top border-gray-100 border-5"
+                    <div className={`col text-center border-top-8 ${detail.status === "已到貨" ? "border-secondary-300" : "border-gray-100"}`}
                     >
                         <p className="pt-3 fs-11">已到貨</p>
                     </div>
-                    <div className="col text-center border-top border-gray-100 border-5"
+                    <div className={`col text-center border-top-8 ${detail.status === "已收貨" ? "border-secondary-300" : "border-gray-100"}`}
                     >
                         <p className="pt-3 fs-11">已收貨</p>
                     </div>
-                </div>
+                </div>)}
                 {/* 訂單編號 */}
                 {detail && (
                     <div className="row justify-content-center border-bottom border-gray-100 pb-7">
@@ -291,10 +295,10 @@ const OrderDetails = () => {
                     </div>
                     <ul className="list-unstyled">
                         {
-                            orderProduct.map((product,index) => {
+                            orderProduct.map((product, index) => {
                                 return (
                                     <li className="d-flex align-items-center gap-5 px-3 pt-3 pb-5 border-bottom border-gray-100" key={index}>
-                                        <img src={product.name?productImages[product.name]:productImages["客製化披薩"]} alt={product.name}
+                                        <img src={product.name ? productImages[product.name] : productImages["客製化披薩"]} alt={product.name}
                                             style={{ width: 120, height: 120 }} />
                                         <div className="d-flex flex-column  text-start">
                                             <p className="fw-bold fs-7">{product.name}（{product.size}）</p>
@@ -315,7 +319,7 @@ const OrderDetails = () => {
                     <div className="mb-5">
                         <h5 className="section-title fs-5 fs-lg-5 text-primary text-start">Customer Information</h5>
                     </div>
-                    {detail&&(<ul className="list-unstyled">
+                    {detail && (<ul className="list-unstyled">
                         <li className="text-start mt-3 mb-3">
                             <p className="mb-2">名稱</p>
                             <p className="fw-bold fs-8">{detail.customer.name}</p>
@@ -337,25 +341,25 @@ const OrderDetails = () => {
                     <div className="mb-5">
                         <h5 className="section-title fs-5 text-primary text-start">Shipping Information</h5>
                     </div>
-                    {detail&&(
+                    {detail && (
                         <ul className="list-unstyled">
-                        <li className="text-start mt-3 mb-3">
-                            <p className="mb-2">配送方式</p>
-                            <p className="fw-bold fs-8">{detail.shipping.method}</p>
-                        </li>
-                        {
-                            detail.shipping.store?<li className="text-start mt-3 mb-3">
-                            <p className="mb-2">取貨門市</p>
-                            <p className="fw-bold fs-8">{detail.shipping.store}</p>
-                        </li>:""
-                        }
-                        {
-                            detail.shipping.address?<li className="text-start mt-3 mb-3">
-                            <p className="mb-2">取貨地址</p>
-                            <p className="fw-bold fs-8">{detail.shipping.address}</p>
-                        </li>:""
-                        }
-                    </ul>
+                            <li className="text-start mt-3 mb-3">
+                                <p className="mb-2">配送方式</p>
+                                <p className="fw-bold fs-8">{detail.shipping.method}</p>
+                            </li>
+                            {
+                                detail.shipping.store ? <li className="text-start mt-3 mb-3">
+                                    <p className="mb-2">取貨門市</p>
+                                    <p className="fw-bold fs-8">{detail.shipping.store}</p>
+                                </li> : ""
+                            }
+                            {
+                                detail.shipping.address ? <li className="text-start mt-3 mb-3">
+                                    <p className="mb-2">取貨地址</p>
+                                    <p className="fw-bold fs-8">{detail.shipping.address}</p>
+                                </li> : ""
+                            }
+                        </ul>
                     )}
 
                 </div>
@@ -364,7 +368,7 @@ const OrderDetails = () => {
                     <div className="mb-5">
                         <h5 className="section-title fs-5 text-primary text-start">Payment Information</h5>
                     </div>
-                    {detail&&(<ul className="list-unstyled">
+                    {detail && (<ul className="list-unstyled">
                         <li className="text-start mt-3 mb-3">
                             <p className="mb-2">付款方式</p>
                             <p className="fw-bold fs-8">{detail.payment.method}</p>
@@ -383,20 +387,20 @@ const OrderDetails = () => {
                     <div className="mb-5">
                         <h5 className="section-title fs-5 text-primary text-start">Payment Details</h5>
                     </div>
-                    {detail&&(
+                    {detail && (
                         <ul className="list-unstyled">
-                        <li className="text-gray-950 fs-8 d-flex justify-content-between mb-3">
-                            <span>商品總金額</span><span>NT$ {detail.amount.productsTotal}</span>
-                        </li>
-                        <li className="text-gray-950 fs-8 d-flex justify-content-between mb-3">
-                            <span>運費</span><span>NT$ {detail.amount.shippingFee}</span>
-                        </li>
-                        <li className="text-gray-950 d-flex justify-content-between">
-                            <span className="fs-8">總付款金額</span>
-                            <h5 className="fs-5 text-primary section-title">NT$ {detail.amount.grandTotal}</h5>
-                        </li>
+                            <li className="text-gray-950 fs-8 d-flex justify-content-between mb-3">
+                                <span>商品總金額</span><span>NT$ {detail.amount.productsTotal}</span>
+                            </li>
+                            <li className="text-gray-950 fs-8 d-flex justify-content-between mb-3">
+                                <span>運費</span><span>NT$ {detail.amount.shippingFee}</span>
+                            </li>
+                            <li className="text-gray-950 d-flex justify-content-between">
+                                <span className="fs-8">總付款金額</span>
+                                <h5 className="fs-5 text-primary section-title">NT$ {detail.amount.grandTotal}</h5>
+                            </li>
 
-                    </ul>)}
+                        </ul>)}
 
 
                 </div>
