@@ -1,0 +1,78 @@
+.account-container {
+  max-width: 856px;
+}
+
+.user-pic {
+  width: 196px;
+  height: 196px;
+}
+.user-pic-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.edit-btn {
+  width: 48px;
+  height: 48px;
+  background: white;
+  background-image: url("../../images/edit-icon.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.edit-btn:hover {
+  background: var(--bs-primary);
+  background-image: url("../../images/edit-icon-white.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.copy-btn {
+  width: 48px;
+  height: 48px;
+  background: white;
+  background-image: url("../../images/copy-icon.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.copy-btn:hover {
+  background: var(--bs-primary);
+  background-image: url("../../images/copy-icon-white.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.order-list-btn {
+  top: 24px;
+  right: 48px;
+}
+
+.hero-bg-50 {
+  position: relative;
+  background-image: url("../../images/hero_bg.png");
+  background-size: cover;
+}
+// 設定背景透明度
+.hero-bg-50::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+}
+
+.upgrade-bar {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.user-info {
+  padding-top: 14px;
+  padding-bottom: 12px;
+}
