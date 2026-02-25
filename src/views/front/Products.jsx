@@ -70,7 +70,13 @@ const Products = () => {
   const [selectedCheeseTypes, setSelectedCheeseTypes] = useState([]);
   const [toppingCombosList, setToppingCombosList] = useState([]);
   const [selectedToppingCombos, setSelectedToppingCombos] = useState([]);
+  const [showDetail, setShowDetail] = useState(false);
 
+  const basePrice = 0; // 基本價格
+  const total =
+    basePrice +
+    (selectedPizzaSizes?.price || 0) +
+    (selectedToppingCombos?.price || 0);
   // useEffect 取得資料
 
   useEffect(() => {
@@ -127,16 +133,16 @@ const Products = () => {
                   <div className="col-12 col-md-4" key={sauce.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
-                        selectedSauce === sauce.id ? "bg-secondary-100" : ""
+                        selectedSauce?.id === sauce.id ? "bg-secondary-100" : ""
                       }`}
                       style={{ cursor: "pointer" }}
-                      onClick={() => setSelectedSauce(sauce.id)}
+                      onClick={() => setSelectedSauce(sauce)}
                     >
                       <div>
                         <div className="card-photo justify-content-center">
                           <div
                             className={`card-check rounded-4 ${
-                              selectedSauce === sauce.id ? "bg-primary" : ""
+                              selectedSauce?.id === sauce.id ? "bg-primary" : ""
                             }`}
                           >
                             <a
@@ -189,12 +195,12 @@ const Products = () => {
                   <div className="col-12 col-md-4" key={pizzaSizes.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
-                        selectedPizzaSizes === pizzaSizes.id
+                        selectedPizzaSizes?.id === pizzaSizes.id
                           ? "bg-secondary-100"
                           : ""
                       }`}
                       style={{ cursor: "pointer" }}
-                      onClick={() => setSelectedPizzaSizes(pizzaSizes.id)}
+                      onClick={() => setSelectedPizzaSizes(pizzaSizes)}
                     >
                       <div>
                         <div className="card-photo justify-content-center">
@@ -203,7 +209,7 @@ const Products = () => {
                           </h2>
                           <div
                             className={`card-check rounded-4 ${
-                              selectedPizzaSizes === pizzaSizes.id
+                              selectedPizzaSizes?.id === pizzaSizes.id
                                 ? "bg-primary"
                                 : ""
                             }`}
@@ -242,17 +248,17 @@ const Products = () => {
                   <div className="col-12 col-md-4" key={pizzaCrusts.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
-                        selectedPizzaCrusts === pizzaCrusts.id
+                        selectedPizzaCrusts?.id === pizzaCrusts.id
                           ? "bg-secondary-100"
                           : ""
                       }`}
                       style={{ cursor: "pointer" }}
-                      onClick={() => setSelectedPizzaCrusts(pizzaCrusts.id)}
+                      onClick={() => setSelectedPizzaCrusts(pizzaCrusts)}
                     >
                       <div className="card-photo justify-content-center">
                         <div
                           className={`card-check rounded-4 ${
-                            selectedPizzaCrusts === pizzaCrusts.id
+                            selectedPizzaCrusts?.id === pizzaCrusts.id
                               ? "bg-primary"
                               : ""
                           }`}
@@ -290,17 +296,17 @@ const Products = () => {
                   <div className="col-12 col-md-4" key={cheeseTypes.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
-                        selectedCheeseTypes === cheeseTypes.id
+                        selectedCheeseTypes?.id === cheeseTypes.id
                           ? "bg-secondary-100"
                           : ""
                       }`}
                       style={{ cursor: "pointer" }}
-                      onClick={() => setSelectedCheeseTypes(cheeseTypes.id)}
+                      onClick={() => setSelectedCheeseTypes(cheeseTypes)}
                     >
                       <div className="card-photo justify-content-center">
                         <div
                           className={`card-check rounded-4  ${
-                            selectedCheeseTypes === cheeseTypes.id
+                            selectedCheeseTypes?.id === cheeseTypes.id
                               ? "bg-primary"
                               : ""
                           }`}
@@ -355,12 +361,12 @@ const Products = () => {
                   <div className="col-12 col-md-4" key={toppingCombos.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
-                        selectedToppingCombos === toppingCombos.id
+                        selectedToppingCombos?.id === toppingCombos.id
                           ? "bg-secondary-100"
                           : ""
                       }`}
                       style={{ cursor: "pointer" }}
-                      onClick={() => setSelectedToppingCombos(toppingCombos.id)}
+                      onClick={() => setSelectedToppingCombos(toppingCombos)}
                     >
                       <div className="card-photo justify-content-center">
                         <h2 className="selling-price section-title">
@@ -368,7 +374,7 @@ const Products = () => {
                         </h2>
                         <div
                           className={`card-check rounded-4 ${
-                            selectedToppingCombos === toppingCombos.id
+                            selectedToppingCombos?.id === toppingCombos.id
                               ? "bg-primary"
                               : ""
                           }`}
@@ -410,43 +416,195 @@ const Products = () => {
         </div>
       </main>
       {/* 總計 */}
-      <div class="d-none d-md-block container-fluid fixed-bottom p-0 bottom-0">
-        <div class="product-shadow bg-secondary py-4">
-          <div class="container">
-            <div class="d-flex align-items-center">
-              <div class="fs-9 fs-md-8 me-3">總計</div>
-              <div class="section-title text-primary fs-5 me-auto">NT$ 520</div>
-              <a href="packageResult.html">
-                <button class="btn-filled-primary" type="button">
-                  <div class="d-flex align-items-center">
-                    <span class="me-2">生成您的披薩組合</span>
-                    <i class="bi bi-arrow-right fs-6"></i>
-                  </div>
+      <div className="d-none d-md-block container-fluid fixed-bottom p-0 bottom-0">
+        <div className="product-shadow bg-secondary py-4">
+          <div className="container">
+            {/* 展開的明細 */}
+            {showDetail && (
+              <div className="mb-3 border-bottom pb-3">
+                <div className="d-flex justify-content-between mb-2">
+                  <p className="fs-8 mb-0">基本價格</p>
+                  <p className="fs-8 mb-0">NT$ {basePrice}</p>
+                </div>
+                {selectedSauce && (
+                  <>
+                    <p className="fs-8 fw-bold mb-1">醬料</p>
+                    <div className="d-flex justify-content-between mb-2">
+                      <p className="fs-8 mb-0">{selectedSauce.title}</p>
+                      <p className="fs-8 mb-0">
+                        NT$ {selectedSauce.price || 0}
+                      </p>
+                    </div>
+                  </>
+                )}
+                {selectedPizzaSizes && (
+                  <>
+                    <p className="fs-8 fw-bold mb-1">尺寸</p>
+                    <div className="d-flex justify-content-between mb-2">
+                      <p className="fs-8 mb-0">{selectedPizzaSizes.inches}</p>
+                      <p className="fs-8 mb-0">
+                        NT$ {selectedPizzaSizes.price}
+                      </p>
+                    </div>
+                  </>
+                )}
+                {selectedPizzaCrusts && (
+                  <>
+                    <p className="fs-8 fw-bold mb-1">餅皮</p>
+                    <div className="d-flex justify-content-between mb-2">
+                      <p className="fs-8 mb-0">{selectedPizzaCrusts.crust}</p>
+                      <p className="fs-8 mb-0">
+                        NT$ {selectedPizzaCrusts.price || 0}
+                      </p>
+                    </div>
+                  </>
+                )}
+                {selectedCheeseTypes && (
+                  <>
+                    <p className="fs-8 fw-bold mb-1">起司</p>
+                    <div className="d-flex justify-content-between mb-2">
+                      <p className="fs-8 mb-0">{selectedCheeseTypes.name}</p>
+                      <p className="fs-8 mb-0">
+                        NT$ {selectedCheeseTypes.price || 0}
+                      </p>
+                    </div>
+                  </>
+                )}
+                {selectedToppingCombos && selectedToppingCombos.ingredients && (
+                  <>
+                    <p className="fs-8 fw-bold mb-1">配料組合</p>
+                    <div className="d-flex justify-content-between mb-2">
+                      <p className="fs-8 mb-0">
+                        {selectedToppingCombos.name}（
+                        {selectedToppingCombos.ingredients
+                          .map((i) => i.name)
+                          .join("、")}
+                        ）
+                      </p>
+                      <p className="fs-8 mb-0">
+                        NT$ {selectedToppingCombos.price}
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+            <div className="d-flex align-items-center">
+              <div>
+                <div className="fs-9 fs-md-8">總計</div>
+                <button
+                  className="btn p-0 fs-8 text-gray-700"
+                  onClick={() => setShowDetail(!showDetail)}
+                >
+                  項目明細{" "}
+                  <i
+                    className={`bi bi-chevron-${showDetail ? "up" : "down"}`}
+                  ></i>
                 </button>
-              </a>
+              </div>
+              <div className="section-title text-primary fs-5 ms-3 me-auto">
+                NT$ {total}
+              </div>
+              <button className="btn-filled-primary" type="button">
+                <div className="d-flex align-items-center">
+                  <span className="me-2">生成您的披薩組合</span>
+                  <i className="bi bi-arrow-right fs-6"></i>
+                </div>
+              </button>
             </div>
           </div>
         </div>
       </div>
       {/* 總計-手機板 */}
-      <div class="d-md-none container-fluid p-0 position-fixed bottom-0">
-        <div class="rounded-top-3 product-shadow bg-secondary p-4">
-          <div class="d-flex align-items-center mb-4">
-            <div class="me-auto">
-              <h3 class="fs-9 text-gray-950">總計</h3>
-            </div>
-            <div>
-              <h2 class="section-title fs-5 text-primary">NT$ 520</h2>
-            </div>
-          </div>
-          <a href="packageResult.html">
-            <button class="btn-filled-primary w-100" type="button">
-              <div class="d-flex align-items-center justify-content-center">
-                <span class="me-2">生成您的披薩組合</span>
-                <i class="bi bi-arrow-right fs-6"></i>
+      <div className="d-md-none container-fluid p-0 position-fixed bottom-0">
+        <div className="rounded-top-3 product-shadow bg-secondary p-4">
+          {/* 展開的明細 */}
+          {showDetail && (
+            <div className="mb-3 border-bottom pb-3">
+              <div className="d-flex justify-content-between mb-2">
+                <p className="fs-8 mb-0">基本價格</p>
+                <p className="fs-8 mb-0">NT$ {basePrice}</p>
               </div>
-            </button>
-          </a>
+              {selectedSauce && (
+                <>
+                  <p className="fs-8 fw-bold mb-1">醬料</p>
+                  <div className="d-flex justify-content-between mb-2">
+                    <p className="fs-8 mb-0">{selectedSauce.title}</p>
+                    <p className="fs-8 mb-0">NT$ {selectedSauce.price || 0}</p>
+                  </div>
+                </>
+              )}
+              {selectedPizzaSizes && (
+                <>
+                  <p className="fs-8 fw-bold mb-1">尺寸</p>
+                  <div className="d-flex justify-content-between mb-2">
+                    <p className="fs-8 mb-0">{selectedPizzaSizes.inches}</p>
+                    <p className="fs-8 mb-0">NT$ {selectedPizzaSizes.price}</p>
+                  </div>
+                </>
+              )}
+              {selectedPizzaCrusts && (
+                <>
+                  <p className="fs-8 fw-bold mb-1">餅皮</p>
+                  <div className="d-flex justify-content-between mb-2">
+                    <p className="fs-8 mb-0">{selectedPizzaCrusts.crust}</p>
+                    <p className="fs-8 mb-0">
+                      NT$ {selectedPizzaCrusts.price || 0}
+                    </p>
+                  </div>
+                </>
+              )}
+              {selectedCheeseTypes && (
+                <>
+                  <p className="fs-8 fw-bold mb-1">起司</p>
+                  <div className="d-flex justify-content-between mb-2">
+                    <p className="fs-8 mb-0">{selectedCheeseTypes.name}</p>
+                    <p className="fs-8 mb-0">
+                      NT$ {selectedCheeseTypes.price || 0}
+                    </p>
+                  </div>
+                </>
+              )}
+              {selectedToppingCombos && (
+                <>
+                  <p className="fs-8 fw-bold mb-1">配料組合</p>
+                  <div className="d-flex justify-content-between mb-2">
+                    <p className="fs-8 mb-0">
+                      {selectedToppingCombos.name}（
+                      {selectedToppingCombos.ingredients
+                        .map((i) => i.name)
+                        .join("、")}
+                      ）
+                    </p>
+                    <p className="fs-8 mb-0">
+                      NT$ {selectedToppingCombos.price}
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+          <div className="d-flex align-items-center mb-4">
+            <div className="me-auto">
+              <h3 className="fs-9 text-gray-950">總計</h3>
+              <button
+                className="btn p-0 fs-8 text-gray-700"
+                onClick={() => setShowDetail(!showDetail)}
+              >
+                項目明細{" "}
+                <i
+                  className={`bi bi-chevron-${showDetail ? "up" : "down"}`}
+                ></i>
+              </button>
+            </div>
+            <h2 className="section-title fs-5 text-primary">NT$ {total}</h2>
+          </div>
+          <button className="btn-filled-primary w-100" type="button">
+            <div className="d-flex align-items-center justify-content-center">
+              <span className="me-2">生成您的披薩組合</span>
+              <i className="bi bi-arrow-right fs-6"></i>
+            </div>
+          </button>
         </div>
       </div>
     </>
