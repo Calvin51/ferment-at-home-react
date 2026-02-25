@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import lineSmall from '../../assets/images/line-small.png'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const BASE = 'https://ferment-at-home-data.onrender.com';
@@ -18,6 +18,9 @@ const Checkout = () => {
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const navigate = useNavigate();
+    const location = useLocation()
+    const { finalTotal } = location.state || {}
+    
 
 
     useEffect(() => {
@@ -363,7 +366,7 @@ const Checkout = () => {
                                             <>
                                                 <div className="d-flex justify-content-between mb-2">
                                                     <span>商品總金額</span>
-                                                    <span>NT$ {productsTotal.toLocaleString()}</span>
+                                                    <span>NT$ {finalTotal.toLocaleString()}</span>
                                                 </div>
                                                 <div className="d-flex justify-content-between mb-2">
                                                     <span>運費</span>
@@ -371,7 +374,7 @@ const Checkout = () => {
                                                 </div>
                                                 <div className="d-flex justify-content-between fw-bold mb-md-6">
                                                     <span>總付款金額</span>
-                                                    <span className="text-primary text-font">NT$ {grandTotal.toLocaleString()}</span>
+                                                    <span className="text-primary text-font">NT$ {(finalTotal+SHIPPING_FEE).toLocaleString()}</span>
                                                 </div>
                                             </>
                                         )}

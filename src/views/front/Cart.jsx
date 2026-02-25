@@ -18,6 +18,7 @@ import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const APIUrl = "https://ferment-at-home-data.onrender.com/";
 const productImages = {
@@ -33,6 +34,17 @@ const shippingFee = 100;
 const Cart = () => {
   const [cartList, setCartList] = useState([]);
   const [popList, setPopList] = useState([]);
+
+  const navigate = useNavigate()
+
+const handleCheckout = () => {
+  navigate("/checkout", {
+    state: {
+      cartList,
+      finalTotal
+    }
+  })
+}
   useEffect(() => {
     const getCart = async () => {
       try {
@@ -313,8 +325,9 @@ const Cart = () => {
                 </div>
                 <button
                   className="btn-filled-primary"
-                  // style={{width: 258}}
+                  style={{width: 258}}
                   type="button"
+                  onClick={handleCheckout}
                 >
                   確認付款
                 </button>
@@ -475,6 +488,7 @@ const Cart = () => {
             className="btn-filled-primary"
             style={{ width: "100%" }}
             type="button"
+            onClick={handleCheckout}
           >
             確認付款
           </button>
