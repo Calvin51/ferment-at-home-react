@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import lineSmall from "../../assets/images/line-small.png";
 import check from "../../assets/images/Check-2-Fill--Streamline-Mingcute-Fill.svg";
 import sourceGreen from "../../assets/images/sauce-01.png";
@@ -77,7 +78,49 @@ const Products = () => {
     basePrice +
     (selectedPizzaSizes?.price || 0) +
     (selectedToppingCombos?.price || 0);
-  // useEffect 取得資料
+
+  const navigate = useNavigate();
+
+  const handleAddToCart = async () => {
+    // 驗證是否都選了
+    if (
+      !selectedSauce ||
+      !selectedPizzaSizes ||
+      !selectedPizzaCrusts ||
+      !selectedCheeseTypes ||
+      !selectedToppingCombos
+    ) {
+      alert("請選擇所有項目");
+      return;
+    }
+
+    const cartData = {
+      title: "客製化披薩",
+      size: {
+        id: selectedPizzaSizes.id,
+        inchs: selectedPizzaSizes.inches,
+        price: selectedPizzaSizes.price,
+      },
+      selectedOptions: {
+        sauce: { id: selectedSauce.id, name: selectedSauce.title },
+        crust: { id: selectedPizzaCrusts.id, name: selectedPizzaCrusts.crust },
+        cheese: { id: selectedCheeseTypes.id, name: selectedCheeseTypes.name },
+        combo: {
+          id: selectedToppingCombos.id,
+          name: selectedToppingCombos.name,
+        },
+      },
+      quantity: 1,
+      totalPrice: total,
+    };
+
+    try {
+      await axios.post(`${APIUrl}cart`, cartData);
+      navigate("/cart");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   useEffect(() => {
     const getProducts = async () => {
@@ -505,9 +548,13 @@ const Products = () => {
               <div className="section-title text-primary fs-5 ms-3 me-auto">
                 NT$ {total}
               </div>
-              <button className="btn-filled-primary" type="button">
+              <button
+                className="btn-filled-primary"
+                type="button"
+                onClick={handleAddToCart}
+              >
                 <div className="d-flex align-items-center">
-                  <span className="me-2">生成您的披薩組合</span>
+                  <span className="me-2">加入購物車</span>
                   <i className="bi bi-arrow-right fs-6"></i>
                 </div>
               </button>
@@ -599,9 +646,13 @@ const Products = () => {
             </div>
             <h2 className="section-title fs-5 text-primary">NT$ {total}</h2>
           </div>
-          <button className="btn-filled-primary w-100" type="button">
+          <button
+            className="btn-filled-primary w-100"
+            type="button"
+            onClick={handleAddToCart}
+          >
             <div className="d-flex align-items-center justify-content-center">
-              <span className="me-2">生成您的披薩組合</span>
+              <span className="me-2">加入購物車</span>
               <i className="bi bi-arrow-right fs-6"></i>
             </div>
           </button>
