@@ -7,6 +7,7 @@ import Home from "./views/front/Home";
 import Cart from "./views/front/Cart";
 import OrderDetails from "./views/front/OrderDetails";
 import AccountManage from "./views/front/AccountManage";
+import Checkout from "./views/front/Checkout";
 
 export const routes = createHashRouter([
   {
@@ -41,6 +42,10 @@ export const routes = createHashRouter([
       {
         path: "/accountManage",
         element: <AccountManage />,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout />,
       },
     ],
   },
