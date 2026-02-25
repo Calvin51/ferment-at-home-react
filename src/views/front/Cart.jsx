@@ -12,7 +12,7 @@ import pizzaCustomerized from "../../assets/images/pizza-customerized.png";
 import shoppingCart from "../../assets/images/Shopping-Cart-1-Line--Streamline-Mingcute.svg";
 import downline from "../../assets/images/Down-Line--Streamline-Mingcute.svg";
 import upline from "../../assets/images/Up-Line--Streamline-Mingcute.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation } from "swiper/modules";
@@ -24,10 +24,11 @@ const productImages = {
   "夏威夷披薩": pizzaHawaii,
   "起司三重奏": pizzaCheese,
   "瑪格麗特披薩": pizzaMargaret,
-  "全肉總匯": pizzaMeat,
-  "海鮮總匯": pizzaSeafood,
+  "全肉總匯披薩": pizzaMeat,
+  "海鮮總匯披薩": pizzaSeafood,
   "客製化披薩": pizzaCustomerized
 };
+const shippingFee = 100;
 
 const Cart = () => {
   const [cartList, setCartList] = useState([]);
@@ -58,12 +59,57 @@ const Cart = () => {
     getPopProduct();
   }, []);
 
-  const updateCart = async (cartId, num) => {
+  const updateCart = async (item, qty) => {
     try {
-      const res = await axios.put(`${APIUrl}/cart/${cartId}`, { num });
-      console.log(res.data);
-    } catch (err) {
-      console.log(err.message);
+      const updatedItem = {
+        ...item,
+        quantity: qty
+      }
+      const res = await axios.put(`${APIUrl}cart/${item.id}`,updatedItem);
+      console.log(res.data)
+      const response = await axios.get(`${APIUrl}cart`);
+        // console.log(res.data);
+        setCartList(response.data);
+  
+    } catch (error) {
+      console.log(error.message)
+    }
+  };
+
+  const handleQtyChange = (item, newQty) => {
+    const safeQty = Math.max(1, newQty);
+  
+    const newCart = cartList.map((cartItem) =>
+      cartItem.id === item.id
+        ? { ...cartItem, quantity: safeQty }
+        : cartItem
+    );
+  
+    setCartList(newCart);
+  
+    updateCart(item, safeQty); // 再同步資料庫
+  };
+
+  const addCart = async (popItem, quantity, selectedSize,totalPrice) => {
+    const cartData = {
+      productId: popItem.id,
+      title: popItem.title,
+      size: {
+          id: selectedSize.id,
+          inchs: selectedSize.inchs,
+          price: selectedSize.price
+        }
+      ,
+      quantity,
+      totalPrice
+    };
+  
+    console.log(cartData)
+    try {
+      const res = await axios.post(`${APIUrl}cart`, cartData);
+      setCartList(prev => [...prev, res.data]); // 更新畫面
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -71,11 +117,101 @@ const Cart = () => {
     try {
       const res = await axios.delete(`${APIUrl}cart/${cartId}`);
       console.log(res.data);
-      const response = await axios.get(`$${APIUrl}cart`);
+      const response = await axios.get(`${APIUrl}cart`);
       setCartList(response.data);
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const finalTotal = useMemo(() => {
+    return cartList.reduce(
+      (sum, item) => sum + item.totalPrice * item.quantity,
+      0
+    );
+  }, [cartList]);
+
+  const PopProductCard = ({ popItem }) => {
+    const [selectedSize, setSelectedSize] = useState(popItem.size[0]);
+    const [quantity, setQuantity] = useState(1);
+
+    const price = selectedSize?.price || 0;
+    const totalPrice = price * quantity;
+
+
+    return (
+      <div className="card border-0 bg-secondary rounded-4 p-5">
+        {/* 產品圖   */}
+        <div className="text-center">
+          <img
+            src={productImages[popItem.title]}
+            className="card-img-top"
+            style={{ width: 258 }}
+            alt={popItem.title}
+          />
+        </div>
+        {/* 產品介紹 */}
+        <div>
+          <h5 className="card-title fw-bold">{popItem.title}</h5>
+          <p className="card-text fs-8 text-gray-700 mb-5">
+            {popItem.description}
+          </p>
+          <p className="section-title text-primary fs-5 mb-5">
+            NT${totalPrice}
+          </p>
+        </div>
+        {/* 尺寸選擇 */}
+        <div className="d-flex justify-content-center gap-2 mb-5">
+        {popItem.size.map((sizeItem) => (
+          <button
+            key={sizeItem.id}
+            className={`sizeChoose btn fs-8 ${
+              selectedSize?.id === sizeItem.id
+                ? "btn-gray-700"
+                : "btn-gray-100"
+            }`}
+            onClick={() => setSelectedSize(sizeItem)}
+          >
+            {sizeItem.inchs}
+          </button>
+        ))}
+        </div>
+        {/* 數量選擇 */}
+        <div className="d-flex gap-2 justify-content-center align-items-center">
+          <div
+            className="border border-2 border-primary rounded-pill bg-white"
+            style={{ width: 186 }}
+          >
+            <div className="input-group my-2 justify-content-center">
+              <button className="btn p-3"
+              onClick={() =>
+                setQuantity(prev => (prev > 1 ? prev - 1 : 1))
+              }>
+                <img src={minus} alt="少一個" />
+              </button>
+              <input
+                type="text"
+                value={quantity} 
+                className="quantity-input section-title fs-5"
+                style={{ width: 74 }}
+              />
+              <button className="btn p-3"
+              onClick={() => setQuantity(prev => prev + 1)}>
+                <img src={plus} alt="多一個" />
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="btn bg-primary shop-btn rounded-circle"
+            onClick={() => addCart(popItem, quantity, selectedSize,totalPrice)}
+          >
+            <img src={shoppingCart} alt="購物車" />
+          </button>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -96,47 +232,60 @@ const Cart = () => {
               <ul className="list-unstyled p-5 border border-4 border-secondary-300 rounded-3">
                 {cartList.map((item, index) => {
                   return (
+
                     <li
-                      className={`d-flex align-items-center ${index === cartList.length - 1 ? "border-bottom" : ""}border-bottom gap-5 py-5 px-8`}
+                      className={`d-flex align-items-center ${index !== cartList.length - 1 ? "border-bottom" : ""} gap-5 py-5 px-8`}
                       key={item.id}
                     >
                       <img
-                        src={item.title?productImages[item.title]:productImages["客製化披薩"]}
+                        src={productImages[item.title]}
                         alt={item.title}
                         style={{ width: 160, height: 160 }}
                       />
                       <div style={{ width: 218 }}>
-                        <h7 className="fw-bold fs-7">
-                          {item.title?item.title:"客製化披薩"}（{item.size}）
-                        </h7>
+                        <p className="fw-bold fs-7">
+                          {item.title}（{item.size?.inchs ? item.size?.inchs : item.selectedOptions?.size?.name}）
+                        </p>
+                        {item.selectedOptions && (
+                          <p>
+                            {[
+                              item.selectedOptions.sauce?.name,
+                              item.selectedOptions.crust?.name,
+                              item.selectedOptions.cheese?.name,
+                              item.selectedOptions.combo?.name,
+                            ]
+                              .filter(Boolean)
+                              .join(" / ")}
+                          </p>
+                        )}
                       </div>
                       <div
                         className="border border-2 border-primary rounded-pill"
                         style={{ width: 180 }}
                       >
                         <div className="input-group my-2 justify-content-center">
-                          <button className="btn p-3">
+                          <button className="btn p-3"
+                          onClick={() => handleQtyChange(item, item.quantity - 1)}>
                             <img src={minus} alt="少一個" />
                           </button>
                           <input
                             type="text"
-                            defaultValue={item.num}
+                            value={item.quantity}
                             className="quantity-input section-title fs-5"
-                            onChange={(e) =>
-                              updateCart(item.id, Number(e.target.value))
-                            }
+                            onChange={(e)=>updateCart(item, Number(e.target.value))}
                             style={{ width: 68 }}
                           />
-                          <button className="btn p-3">
+                          <button className="btn p-3"
+                          onClick={() => handleQtyChange(item, item.quantity + 1)}>
                             <img src={plus} alt="多一個" />
                           </button>
                         </div>
                       </div>
 
                       <h5 className="text-primary section-title">
-                        NT${item.price}
+                        NT${item.quantity*item.totalPrice}
                       </h5>
-                      <button type="button" onClick={() => deletCart(item.id)}>
+                      <button className="nonstyle-button" type="button" onClick={() => deletCart(item.id)}>
                         <img src={trashcan} alt="delet" />
                       </button>
                     </li>
@@ -151,16 +300,16 @@ const Cart = () => {
                 <ul className="border-bottom list-unstyled">
                   <li className="d-flex justify-content-between mb-5">
                     <p className="fs-8">小計</p>
-                    <p className="fs-8">NT$ 1,040</p>
+                    <p className="fs-8">NT$ {finalTotal}</p>
                   </li>
                   <li className="d-flex justify-content-between mb-5">
                     <p className="fs-8">運費</p>
-                    <p className="fs-8">NT$ 100</p>
+                    <p className="fs-8">NT$ {shippingFee}</p>
                   </li>
                 </ul>
                 <div className="d-flex justify-content-between align-items-center mt-2 mb-5">
                   <p className="fs-8">應付金額</p>
-                  <p className="fs-5 text-primary section-title">NT$ 1,140</p>
+                  <p className="fs-5 text-primary section-title">NT$ {finalTotal + shippingFee}</p>
                 </div>
                 <button
                   className="btn-filled-primary"
@@ -174,25 +323,26 @@ const Cart = () => {
           </div>
         </div>
         {/* 手機版  */}
-        <ul className="container text-center list-unstyled -0 d-lg-none">
-          {cartList.map((phoneitem, index) => {
-            return (
+        {cartList.map((item, index) => {
+
+          return (
+            <ul className="container text-center list-unstyled -0 d-lg-none" key={index}>
               <li
                 className={`${index !== cartList.length - 1 ? "border-bottom" : ""} pt-3 pb-5 px-3`}
               >
                 {/* 產品 */}
                 <div className="d-flex gap-3 align-items-center mb-3">
                   <img
-                    src={phoneitem.title?productImages[phoneitem.title]:productImages["客製化披薩"]}
-                    alt={phoneitem.title}
+                    src={productImages[item.title]}
+                    alt={item.title}
                     style={{ width: 120, height: 120 }}
                   />
                   <div>
-                    <h7 className="fw-bold fs-7">
-                      {phoneitem.title?phoneitem.title:"客製化披薩"}（{phoneitem.size}）
-                    </h7>
+                    <p className="fw-bold fs-7">
+                      {item.title}（{item.size?.inchs ? item.size?.inchs : item.selectedOptions?.size?.name}）
+                    </p>
                     <h5 className="text-primary section-title text-start">
-                      NT${phoneitem.price}
+                      NT${item.quantity*item.totalPrice}
                     </h5>
                   </div>
                 </div>
@@ -200,28 +350,32 @@ const Cart = () => {
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="border border-2 border-primary rounded-pill">
                     <div className="input-group my-2 justify-content-center">
-                      <button type="button" className="btn p-3">
+                      <button type="button" className="btn p-3"
+                      onClick={() => handleQtyChange(item, item.quantity - 1)}>
                         <img src={minus} alt="少一個" />
                       </button>
                       <input
                         type="text"
-                        value="1"
+                        value={item.quantity}
                         className="quantity-input section-title fs-5"
                         style={{ width: 139 }}
+                        onChange={(e)=>updateCart(item, Number(e.target.value))}
                       />
-                      <button className="btn p-3">
+                      <button className="btn p-3"
+                      onClick={() => handleQtyChange(item, item.quantity + 1)}>
                         <img src={plus} alt="多一個" />
                       </button>
                     </div>
                   </div>
-                  <button className="btn btn-outline-primary rounded-circle shop-btn">
+                  <button className="btn btn-outline-primary rounded-circle shop-btn"
+                  onClick={() => deletCart(item.id)}>
                     <img src={redDelet} alt="delete" />
                   </button>
                 </div>
               </li>
-            );
-          })}
-        </ul>
+            </ul>
+          )
+        })}
       </section>
 
       {/* 分隔線 */}
@@ -259,70 +413,10 @@ const Cart = () => {
           >
             {popList.map((popItem) => (
               <SwiperSlide key={popItem.id} className="swiper-slide popProduct">
-                <div className="card border-0 bg-secondary rounded-4 p-5">
-                  {/* 產品圖   */}
-                  <div className="text-center">
-                    <img
-                      src={productImages[popItem.name]}
-                      className="card-img-top"
-                      style={{ width: 258 }}
-                      alt={popItem.name}
-                    />
-                  </div>
-                  {/* 產品介紹 */}
-                  <div>
-                    <h5 className="card-title fw-bold">{popItem.name}</h5>
-                    <p className="card-text fs-8 text-gray-700 mb-5">
-                      {popItem.description}
-                    </p>
-                    <p className="section-title text-primary fs-5 mb-5">
-                      NT$240
-                    </p>
-                  </div>
-                  {/* 尺寸選擇 */}
-                  <div className="d-flex justify-content-center gap-2 mb-5">
-                    <button className="sizeChoose btn btn-gray-700 fs-8">
-                      6寸
-                    </button>
-                    <button className="sizeChoose btn btn-gray-100 fs-8">
-                      8寸
-                    </button>
-                    <button className="sizeChoose btn btn-gray-100 fs-8">
-                      12寸
-                    </button>
-                  </div>
-                  {/* 數量選擇 */}
-                  <div className="d-flex gap-2 justify-content-center align-items-center">
-                    <div
-                      className="border border-2 border-primary rounded-pill bg-white"
-                      style={{ width: 186 }}
-                    >
-                      <div className="input-group my-2 justify-content-center">
-                        <button className="btn p-3">
-                          <img src={minus} alt="少一個" />
-                        </button>
-                        <input
-                          type="text"
-                          value="1"
-                          className="quantity-input section-title fs-5"
-                          style={{ width: 74 }}
-                        />
-                        <button className="btn p-3">
-                          <img src={plus} alt="多一個" />
-                        </button>
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="btn bg-primary shop-btn rounded-circle"
-                    >
-                      <img src={shoppingCart} alt="購物車" />
-                    </button>
-                  </div>
-                </div>
+                <PopProductCard popItem={popItem} />
               </SwiperSlide>
             ))}
+
           </Swiper>
           <button
             className="swiper-button-prev btn-filled-primary rounded-circle shop-btn button-left me-3 me-sm-0"
@@ -359,7 +453,7 @@ const Cart = () => {
                 </span>
               </button>
             </div>
-            <div className="fs-5 text-primary section-title">NT$ 1,140</div>
+            <div className="fs-5 text-primary section-title">NT$ {finalTotal + shippingFee}</div>
           </div>
 
           {/* 收合內容佔滿版 */}
@@ -367,11 +461,11 @@ const Cart = () => {
             <div className="w-100">
               <div className="text-gray-950 fs-9 d-flex justify-content-between mb-2">
                 <span>小計</span>
-                <span>NT$ 1,040</span>
+                <span>NT$ {finalTotal}</span>
               </div>
               <div className="text-gray-950 fs-9 d-flex justify-content-between">
                 <span>運費</span>
-                <span>NT$ 100</span>
+                <span>NT$ {shippingFee}</span>
               </div>
             </div>
           </div>
