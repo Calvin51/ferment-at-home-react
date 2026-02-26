@@ -30,7 +30,7 @@ const OrderDetails = () => {
         const getOrderDetails = async () => {
             try {
                 const res = await axios.get(`${APIUrl}orders/${id}`)
-                // console.log(res.data.products);
+                console.log(res.data.products);
                 setDetail(res.data);
                 setOrderProduct(res.data.products)
             } catch (error) {
@@ -47,20 +47,20 @@ const OrderDetails = () => {
         <section className="container-fluid text-center mt-lg-10 mt-6 mb-lg-11">
             {/* 標題 */}
             <div className="container mt-11 position-relative">
-                   <Link
-                    to="/orders"
+                <Link
+                    to="/checkout"
                     className="position-absolute start-0 top-50 d-flex align-items-center text-decoration-none text-dark">
                     <span className="fs-8">←</span>
                     <span className="fs-8 d-none d-lg-inline">回到訂單列表</span>
-                    </Link>
+                </Link>
 
-                    <h2 className="section-title fs-2 fs-lg-1 text-primary text-center">
-                        Order Details
-                    </h2>
+                <h2 className="section-title fs-2 fs-lg-1 text-primary text-center">
+                    Order Details
+                </h2>
             </div>
             <div className="mt-4 text-center mb-lg-11 mb-7">
-                        <img src={lineSmall} alt="線" />
-                    </div>
+                <img src={lineSmall} alt="線" />
+            </div>
             {/* 電腦版訂單內容 */}
             <div className="container d-none d-lg-block border border-4 border-secondary-300 rounded-3">
                 {/* 訂單狀態 */}
@@ -129,12 +129,14 @@ const OrderDetails = () => {
                                         <img src={productImages[product.name]} alt={product.name}
                                             style={{ width: 160, height: 160 }} />
                                         <div className="text-start" style={{ width: 308 }}>
-                                            <p className="fw-bold fs-7">{product.name}（{product.size}）</p>
+                                            <p className="fw-bold fs-7">{product.name}（{typeof product.size === "object"
+                                                ? `${product.size.inchs} `
+                                                : product.size}）</p>
                                         </div>
                                         <div style={{ width: 100 }}>
                                             <h5 className="section-title">X{product.qty}</h5>
                                         </div>
-                                        <h5 className="text-primary section-title">NT${product.price*product.qty}</h5>
+                                        <h5 className="text-primary section-title">NT${product.price * product.qty}</h5>
                                     </li>
 
                                 )
@@ -301,9 +303,12 @@ const OrderDetails = () => {
                                         <img src={productImages[product.name]} alt={product.name}
                                             style={{ width: 120, height: 120 }} />
                                         <div className="d-flex flex-column  text-start">
-                                            <p className="fw-bold fs-7">{product.name}（{product.size}）</p>
+                                            <p className="fw-bold fs-7">{product.name}（{typeof product.size === "object"
+                                                ? `${product.selectedOptions?.size?.name}`
+                                                : product.selectedOptions?.size?.name}）</p>
+                                                
                                             <h5 className="section-title">X{product.qty}</h5>
-                                            <h5 className="text-primary section-title">NT${product.price*product.qty}</h5>
+                                            <h5 className="text-primary section-title">NT${product.price * product.qty}</h5>
                                         </div>
                                     </li>
 

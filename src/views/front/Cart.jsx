@@ -38,12 +38,7 @@ const Cart = () => {
   const navigate = useNavigate()
 
 const handleCheckout = () => {
-  navigate("/checkout", {
-    state: {
-      cartList,
-      finalTotal
-    }
-  })
+  navigate("/checkout")
 }
   useEffect(() => {
     const getCart = async () => {

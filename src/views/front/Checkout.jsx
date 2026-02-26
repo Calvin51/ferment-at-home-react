@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import lineSmall from '../../assets/images/line-small.png'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const BASE = 'https://ferment-at-home-data.onrender.com';
@@ -18,8 +18,26 @@ const Checkout = () => {
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const navigate = useNavigate();
-    const location = useLocation()
-    const { finalTotal } = location.state || {}
+    //自動生成訂單編號
+    const generateOrderNumber = () => {
+        const date = new Date();
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        const random = Math.floor(100000 + Math.random() * 900000);
+        return `ORD-${y}${m}${d}-${random}`;
+      };
+    //自動生成發票號碼
+    const generateInvoiceNumber = () => {
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const prefix =
+          letters[Math.floor(Math.random() * 26)] +
+          letters[Math.floor(Math.random() * 26)];
+      
+        const numbers = Math.floor(10000000 + Math.random() * 90000000);
+        return `${prefix}-${numbers}`;
+      };
+      
     
 
 
@@ -38,7 +56,12 @@ const Checkout = () => {
         apiCart();
     }, [])
 
-    const productsTotal = cart.reduce((acc, item) => acc + Number(item.totalPrice), 0);
+    const productsTotal = cart.reduce(
+        (acc, item) =>
+          acc +
+          Number(item.totalPrice) * Number(item.quantity),
+        0
+      );
     const grandTotal = productsTotal + SHIPPING_FEE;
 
 
@@ -123,11 +146,14 @@ const Checkout = () => {
         try {
             const payload = {
                 status: '訂單成立',
-                orderCreatedAt: new Date().toLocaleString('zh-TW', { hour12: false }).replace(/\//g, '-'),
+                orderCreatedAt: new Date()?.toLocaleString('zh-TW', { hour12: false }).replace(/\//g, '-'),
+                orderNumber: generateOrderNumber(),
+                invoiceNumber: generateInvoiceNumber(),
+                orderPaidAt: new Date()?.toLocaleString('zh-TW', { hour12: false }).replace(/\//g, '-'),
                 products: cart.map(item => ({
                     id: item.id,
                     name: item.title,
-                    size: item.size || item.selectedOptions?.size?.name || '',
+                    size:item.size?.inchs||item.selectedOptions?.size?.name,
                     price: Number(item.totalPrice),
                     qty: Number(item.quantity),
                     subtotal: Number(item.totalPrice) * Number(item.quantity),
@@ -151,9 +177,10 @@ const Checkout = () => {
                     grandTotal,
                 },
             };
-            await axios.post(`${BASE}/orders`, payload);
+            const res= await axios.post(`${BASE}/orders`, payload);
+            const newOrderId = res.data.id;
             setSubmitSuccess(true);
-            navigate('/orderdetails');
+            navigate(`/orderdetails/${newOrderId}`);
         } catch (e) {
             console.error('送出訂單失敗', e);
             setSubmitError('送出訂單失敗，請稍後再試');
@@ -366,7 +393,7 @@ const Checkout = () => {
                                             <>
                                                 <div className="d-flex justify-content-between mb-2">
                                                     <span>商品總金額</span>
-                                                    <span>NT$ {finalTotal.toLocaleString()}</span>
+                                                    <span>NT$ {productsTotal?.toLocaleString()}</span>
                                                 </div>
                                                 <div className="d-flex justify-content-between mb-2">
                                                     <span>運費</span>
@@ -374,7 +401,7 @@ const Checkout = () => {
                                                 </div>
                                                 <div className="d-flex justify-content-between fw-bold mb-md-6">
                                                     <span>總付款金額</span>
-                                                    <span className="text-primary text-font">NT$ {(finalTotal+SHIPPING_FEE).toLocaleString()}</span>
+                                                    <span className="text-primary text-font">NT$ {grandTotal?.toLocaleString()}</span>
                                                 </div>
                                             </>
                                         )}
