@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation } from "swiper/modules";
@@ -40,23 +41,23 @@ const Home = () => {
           className="d-lg-none d-block mx-auto mb-5"
         />
         {/* <!-- banner按鈕 --> */}
-        <a href="./products.html">
+        <Link to="/products">
           <button
             className="btn-outline-primary px-7 banner-button position-absolute bottom-200 start-50 translate-middle-x z-2 d-lg-block d-none"
             type="button"
           >
             開始發酵
           </button>
-        </a>
+        </Link>
         {/* <!-- banner按鈕small --> */}
-        <a href="./products.html">
+        <Link to="/products">
           <button
             className="btn-filled-primary px-7 banner-button d-block d-lg-none mx-auto mb-7"
             type="button"
           >
             開始發酵
           </button>
-        </a>
+        </Link>
 
         {/* <!-- 輪播圖 --> */}
         <div
@@ -374,15 +375,14 @@ const Home = () => {
       <div className="d-block w-100 wave-line mt-6 mt-lg-10 mb-8"></div>
       {/* <!-- 顧客回饋 --> */}
       <section className="container-fluid text-center pb-6 pb-sm-10 position-relative">
-        {/* <!-- 回到頂端按鈕 要改--> */}
-        <a href="#">
-          <button
-            className="btn-outline-primary rounded-circle index-top-btn position-fixed"
-            type="button"
-          >
-            <i className="bi bi-chevron-up fs-6 fs-md-5 d-flex justify-content-center"></i>
-          </button>
-        </a>
+        {/* <!-- 回到頂端按鈕 已新增onClick--> */}
+        <button
+          className="btn-outline-primary rounded-circle index-top-btn position-fixed"
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          <i className="bi bi-chevron-up fs-6 fs-md-5 d-flex justify-content-center"></i>
+        </button>
         {/* <!-- 標題 --> */}
         <div className="mb-6 mb-lg-8">
           <h2 className="section-title fs-2 fs-lg-1 text-primary">

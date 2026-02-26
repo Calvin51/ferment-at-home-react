@@ -2,3 +2,7 @@
   backdrop-filter: blur(48px);
   /* 需配合透明背景才能看到效果 */
 }
+
+.login-wrapper {
+  min-height: 75vh; /* 確保容器至少跟視窗一樣高 */
+}

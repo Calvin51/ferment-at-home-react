@@ -1,6 +1,7 @@
 import lineSmall from "../../assets/images/line-small.png";
 import userSelfie from "../../assets/images/user-selfie.png";
 import upgradeBar from "../../assets/images/upgrade-bar.png";
+import { Link } from "react-router-dom";
 
 const AccountManage = () => {
   return (
@@ -33,10 +34,13 @@ const AccountManage = () => {
             <div className="text-center m-5">
               <h2 className="section-title fs-2 text-primary">Order Status</h2>
             </div>
-            <div className="order-list-btn align-items-center py-3 position-absolute d-none d-lg-flex">
+            <Link
+              to="/"
+              className="order-list-btn align-items-center py-3 position-absolute d-none d-lg-flex"
+            >
               <h4 className="fs-9 fw-bold">查看訂單列表</h4>
               <i class="bi bi-arrow-right-short fs-6"></i>
-            </div>
+            </Link>
             <div className="d-flex mb-5 mx-5 justify-content-around">
               <div className="text-center">
                 <h2 className="section-title fs-2 mb-2">0</h2>
