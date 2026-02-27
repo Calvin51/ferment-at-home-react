@@ -97,7 +97,8 @@ const handleCheckout = () => {
     updateCart(item, safeQty); // 再同步資料庫
   };
 
-  const addCart = async (popItem, quantity, selectedSize,totalPrice) => {
+  const addCart = async (popItem, quantity, selectedSize) => {
+    
     const cartData = {
       productId: popItem.id,
       title: popItem.title,
@@ -107,11 +108,10 @@ const handleCheckout = () => {
           price: selectedSize.price
         }
       ,
-      quantity,
-      totalPrice
+      quantity
     };
   
-    console.log(cartData)
+    console.log(cartData.size?.price)
     try {
       const res = await axios.post(`${APIUrl}cart`, cartData);
       setCartList(prev => [...prev, res.data]); // 更新畫面
@@ -131,19 +131,21 @@ const handleCheckout = () => {
     }
   };
 
+
+
   const finalTotal = useMemo(() => {
-    return cartList.reduce(
-      (sum, item) => sum + item.totalPrice * item.quantity,
-      0
-    );
-  }, [cartList]);
+    return cartList.reduce((sum, item) => {
+      const unitPrice = item.totalPrice ?? item.size?.price ?? 0
+      return sum + unitPrice * item.quantity
+    }, 0)
+  }, [cartList])
 
   const PopProductCard = ({ popItem }) => {
     const [selectedSize, setSelectedSize] = useState(popItem.size[0]);
     const [quantity, setQuantity] = useState(1);
 
     const price = selectedSize?.price || 0;
-    const totalPrice = price * quantity;
+    const total = price * quantity;
 
 
     return (
@@ -164,7 +166,7 @@ const handleCheckout = () => {
             {popItem.description}
           </p>
           <p className="section-title text-primary fs-5 mb-5">
-            NT${totalPrice}
+            NT${total}
           </p>
         </div>
         {/* 尺寸選擇 */}
@@ -212,7 +214,7 @@ const handleCheckout = () => {
           <button
             type="button"
             className="btn bg-primary shop-btn rounded-circle"
-            onClick={() => addCart(popItem, quantity, selectedSize,totalPrice)}
+            onClick={() => addCart(popItem, quantity, selectedSize)}
           >
             <img src={shoppingCart} alt="購物車" />
           </button>
@@ -238,6 +240,7 @@ const handleCheckout = () => {
               {/* 購物項目 */}
               <ul className="list-unstyled p-5 border border-4 border-secondary-300 rounded-3">
                 {cartList.map((item, index) => {
+                  console.log(item)
                   return (
 
                     <li
@@ -290,7 +293,9 @@ const handleCheckout = () => {
                       </div>
 
                       <h5 className="text-primary section-title">
-                        NT${item.quantity*item.totalPrice}
+                        NT${item.quantity*item.totalPrice
+                        ?item.quantity*item.totalPrice
+                        :item.quantity*item.size?.price}
                       </h5>
                       <button className="nonstyle-button" type="button" onClick={() => deletCart(item.id)}>
                         <img src={trashcan} alt="delet" />
@@ -350,7 +355,9 @@ const handleCheckout = () => {
                       {item.title}（{item.size?.inchs ? item.size?.inchs : item.selectedOptions?.size?.name}）
                     </p>
                     <h5 className="text-primary section-title text-start">
-                      NT${item.quantity*item.totalPrice}
+                      NT${item.quantity*item.totalPrice
+                        ?item.quantity*item.totalPrice
+                        :item.quantity*item.size?.price}
                     </h5>
                   </div>
                 </div>
