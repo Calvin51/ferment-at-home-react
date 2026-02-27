@@ -304,8 +304,8 @@ const OrderDetails = () => {
                                             style={{ width: 120, height: 120 }} />
                                         <div className="d-flex flex-column  text-start">
                                             <p className="fw-bold fs-7">{product.name}（{typeof product.size === "object"
-                                                ? `${product.selectedOptions?.size?.name}`
-                                                : product.selectedOptions?.size?.name}）</p>
+                                                ? `${product.size.inchs} `
+                                                : product.size}）</p>
                                                 
                                             <h5 className="section-title">X{product.qty}</h5>
                                             <h5 className="text-primary section-title">NT${product.price * product.qty}</h5>

@@ -56,12 +56,12 @@ const Checkout = () => {
         apiCart();
     }, [])
 
-    const productsTotal = cart.reduce(
-        (acc, item) =>
-          acc +
-          Number(item.totalPrice) * Number(item.quantity),
-        0
-      );
+    const productsTotal = cart.reduce((acc, item) => {
+        const unitPrice =
+          item.totalPrice ?? item.size?.price ?? 0;
+      
+        return acc + Number(unitPrice) * Number(item.quantity);
+      }, 0);
     const grandTotal = productsTotal + SHIPPING_FEE;
 
 
