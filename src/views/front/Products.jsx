@@ -612,16 +612,16 @@ const Products = () => {
                   </div>
                 </>
               )}
-              {selectedToppingCombos && (
+              {selectedToppingCombos && selectedToppingCombos.ingredients && (
                 <>
                   <p className="fs-8 fw-bold mb-1">配料組合</p>
                   <div className="d-flex justify-content-between mb-2">
                     <p className="fs-8 mb-0">
-                      {selectedToppingCombos.name}（
+                      {selectedToppingCombos.name}(
                       {selectedToppingCombos.ingredients
                         .map((i) => i.name)
                         .join("、")}
-                      ）
+                      )
                     </p>
                     <p className="fs-8 mb-0">
                       NT$ {selectedToppingCombos.price}
