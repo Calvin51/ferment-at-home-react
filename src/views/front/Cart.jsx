@@ -19,8 +19,11 @@ import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
+import { ProgressBar } from "react-loader-spinner";
 
-const APIUrl = "https://ferment-at-home-data.onrender.com/";
+// const API_BASE = "https://ferment-at-home-data.onrender.com/";
+const API_BASE = import.meta.env.VITE_API_BASE;
 const productImages = {
   "夏威夷披薩": pizzaHawaii,
   "起司三重奏": pizzaCheese,
@@ -37,13 +40,19 @@ const Cart = () => {
 
   const navigate = useNavigate()
 
-const handleCheckout = () => {
-  navigate("/checkout")
-}
+  const [loading, setLoading] = useState(false);
+
+  const handleCheckout = () => {
+    setLoading(true);
+  
+    setTimeout(() => {
+      navigate("/checkout");
+    }, 500);
+  };
   useEffect(() => {
     const getCart = async () => {
       try {
-        const res = await axios.get(`${APIUrl}cart`);
+        const res = await axios.get(`${API_BASE}cart`);
         // console.log(res.data);
         setCartList(res.data);
       } catch (error) {
@@ -51,12 +60,10 @@ const handleCheckout = () => {
       }
     };
     getCart();
-  }, []);
 
-  useEffect(() => {
     const getPopProduct = async () => {
       try {
-        const res = await axios.get(`${APIUrl}popular_Product`);
+        const res = await axios.get(`${API_BASE}popular_Product`);
         // console.log(res.data);
         setPopList(res.data);
       } catch (error) {
@@ -72,9 +79,9 @@ const handleCheckout = () => {
         ...item,
         quantity: qty
       }
-      const res = await axios.put(`${APIUrl}cart/${item.id}`,updatedItem);
+      const res = await axios.put(`${API_BASE}cart/${item.id}`,updatedItem);
       console.log(res.data)
-      const response = await axios.get(`${APIUrl}cart`);
+      const response = await axios.get(`${API_BASE}cart`);
         // console.log(res.data);
         setCartList(response.data);
   
@@ -98,7 +105,6 @@ const handleCheckout = () => {
   };
 
   const addCart = async (popItem, quantity, selectedSize) => {
-    
     const cartData = {
       productId: popItem.id,
       title: popItem.title,
@@ -110,11 +116,14 @@ const handleCheckout = () => {
       ,
       quantity
     };
-  
-    console.log(cartData.size?.price)
     try {
-      const res = await axios.post(`${APIUrl}cart`, cartData);
+      const res = await axios.post(`${API_BASE}cart`, cartData);
       setCartList(prev => [...prev, res.data]); // 更新畫面
+      Swal.fire({
+        title: popItem.title,
+        text: "成功加入購物車!",
+        icon: "success"
+      });
     } catch (error) {
       console.log(error.message);
     }
@@ -122,16 +131,14 @@ const handleCheckout = () => {
 
   const deletCart = async (cartId) => {
     try {
-      const res = await axios.delete(`${APIUrl}cart/${cartId}`);
+      const res = await axios.delete(`${API_BASE}cart/${cartId}`);
       console.log(res.data);
-      const response = await axios.get(`${APIUrl}cart`);
+      const response = await axios.get(`${API_BASE}cart`);
       setCartList(response.data);
     } catch (error) {
       console.log(error.message);
     }
   };
-
-
 
   const finalTotal = useMemo(() => {
     return cartList.reduce((sum, item) => {
@@ -328,8 +335,17 @@ const handleCheckout = () => {
                   style={{width: 258}}
                   type="button"
                   onClick={handleCheckout}
+                  disabled={loading===true}
                 >
-                  確認付款
+                {
+                  loading===true?(
+                    <ProgressBar
+                    visible={true}
+                    height="48"
+                    width="80"
+                    barColor="#ed4709"
+                    />):("確認付款")
+                }
                 </button>
               </div>
             </div>
@@ -491,8 +507,17 @@ const handleCheckout = () => {
             style={{ width: "100%" }}
             type="button"
             onClick={handleCheckout}
+            disabled={loading===true}
           >
-            確認付款
+            {
+                  loading===true?(
+                    <ProgressBar
+                    visible={true}
+                    height="48"
+                    width="80"
+                    barColor="#ed4709"
+                    />):("確認付款")
+                }
           </button>
         </div>
       </div>

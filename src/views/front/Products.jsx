@@ -24,7 +24,7 @@ import foodSpinach from "../../assets/images/food-spinach.png";
 
 import axios from "axios";
 
-const APIUrl = "https://ferment-at-home-data.onrender.com/";
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 // id 對應圖片
 const sauceImages = {
@@ -115,7 +115,7 @@ const Products = () => {
     };
 
     try {
-      await axios.post(`${APIUrl}cart`, cartData);
+      await axios.post(`${API_BASE}cart`, cartData);
       navigate("/cart");
     } catch (error) {
       console.log(error.message);
@@ -125,7 +125,7 @@ const Products = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await axios.get(`${APIUrl}pickProducts`);
+        const res = await axios.get(`${API_BASE}pickProducts`);
         setSauceList(res.data.sauces);
         setPizzaSizesList(res.data.pizzaSizes);
         setPizzaCrustsList(res.data.pizzaCrusts);
