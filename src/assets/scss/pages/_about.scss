@@ -1,0 +1,30 @@
+.about-container {
+  height: 1080px;
+}
+
+.about-hero-photo {
+  background-image: url("../../images/hero.png");
+  background-size: cover;
+  background-position: center;
+}
+
+@media (max-width: 1024px) {
+  .about-container {
+    height: 812px;
+  }
+}
+
+.about-story-image {
+  max-width: 856px;
+  border-radius: 48px;
+  background-image: url("https://github.com/Fury51/img-base/blob/main/gif/Adobe%20Express%20-%20our_story.gif?raw=true");
+  background-repeat: no-repeat;
+  background-size: 98%;
+  background-position: center center;
+}
+
+@media (max-width: 576px) {
+  .about-story-image {
+    border-radius: 28px;
+  }
+}

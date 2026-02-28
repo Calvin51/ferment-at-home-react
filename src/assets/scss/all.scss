@@ -5,11 +5,18 @@
 // @import "../../node_modules/bootstrap.scss";
 
 //加入自訂義utilities區塊
-$utilities: map-merge($utilities,
-    ( //設定文字響應式
-      "font-size": map-merge(map-get($utilities, "font-size"),
-        (responsive: true,
-        ))));
+$utilities: map-merge(
+  $utilities,
+  (
+    //設定文字響應式
+    "font-size": map-merge(
+        map-get($utilities, "font-size"),
+        (
+          responsive: true,
+        )
+      )
+  )
+);
 
 @import "bootstrap/scss/utilities/api"; //加入自訂義utilities區塊
 
@@ -25,3 +32,4 @@ $utilities: map-merge($utilities,
 @import "./pages/packageResult";
 @import "./pages/accountManage";
 @import "./pages/checkout";
+@import "./pages/about";

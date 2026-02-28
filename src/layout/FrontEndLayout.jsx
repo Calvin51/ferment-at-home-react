@@ -170,7 +170,11 @@ const FrontEndLayout = () => {
                       </NavLink>
                     </li>
                     <li className="nav-item me-5 d-block d-lg-none">
-                      <NavLink className="nav-link fw-bold text-primary" to="#">
+                      <NavLink
+                        className="nav-link fw-bold text-primary"
+                        to="/"
+                        onClick={() => setIsAuth(false)}
+                      >
                         登出
                       </NavLink>
                     </li>
