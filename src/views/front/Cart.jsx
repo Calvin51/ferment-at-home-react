@@ -367,9 +367,21 @@ const Cart = () => {
                     style={{ width: 120, height: 120 }}
                   />
                   <div>
-                    <p className="fw-bold fs-7">
+                    <p className="fw-bold fs-7 text-start">
                       {item.title}（{item.size?.inchs ? item.size?.inchs : item.selectedOptions?.size?.name}）
                     </p>
+                    {item.selectedOptions && (
+                          <p className="text-start">
+                            {[
+                              item.selectedOptions.sauce?.name,
+                              item.selectedOptions.crust?.name,
+                              item.selectedOptions.cheese?.name,
+                              item.selectedOptions.combo?.name,
+                            ]
+                              .filter(Boolean)
+                              .join(" / ")}
+                          </p>
+                        )}
                     <h5 className="text-primary section-title text-start">
                       NT${item.quantity*item.totalPrice
                         ?item.quantity*item.totalPrice
