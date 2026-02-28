@@ -3,6 +3,7 @@ import lineSmall from '../../assets/images/line-small.png'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 
 const API_BASE = import.meta.env.VITE_API_BASE;
@@ -26,29 +27,28 @@ const Checkout = () => {
         const d = String(date.getDate()).padStart(2, '0');
         const random = Math.floor(100000 + Math.random() * 900000);
         return `ORD-${y}${m}${d}-${random}`;
-      };
+    };
     //自動生成發票號碼
     const generateInvoiceNumber = () => {
         const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const prefix =
-          letters[Math.floor(Math.random() * 26)] +
-          letters[Math.floor(Math.random() * 26)];
-      
+            letters[Math.floor(Math.random() * 26)] +
+            letters[Math.floor(Math.random() * 26)];
+
         const numbers = Math.floor(10000000 + Math.random() * 90000000);
         return `${prefix}-${numbers}`;
-      };
-      
-    
+    };
+
+
 
 
     useEffect(() => {
         const apiCart = async () => {
             try {
                 const res = await axios.get(`${API_BASE}cart`)
-                console.log(res.data)
                 setCart(res.data)
             } catch (err) {
-                console.log(err)
+                setCart(err.res.data)
             } finally {
                 setCartLoading(false) // ← 加這行
             }
@@ -58,10 +58,10 @@ const Checkout = () => {
 
     const productsTotal = cart.reduce((acc, item) => {
         const unitPrice =
-          item.totalPrice ?? item.size?.price ?? 0;
-      
+            item.totalPrice ?? item.size?.price ?? 0;
+
         return acc + Number(unitPrice) * Number(item.quantity);
-      }, 0);
+    }, 0);
     const grandTotal = productsTotal + SHIPPING_FEE;
 
 
@@ -153,8 +153,8 @@ const Checkout = () => {
                 products: cart.map(item => ({
                     id: item.id,
                     name: item.title,
-                    size:item.size?.inchs||item.selectedOptions?.size?.name,
-                    price: Number(item.totalPrice)?Number(item.totalPrice):Number(item.size?.price),
+                    size: item.size?.inchs || item.selectedOptions?.size?.name,
+                    price: Number(item.totalPrice) ? Number(item.totalPrice) : Number(item.size?.price),
                     qty: Number(item.quantity),
                     subtotal: Number(item.totalPrice) * Number(item.quantity),
                 })),
@@ -177,14 +177,27 @@ const Checkout = () => {
                     grandTotal,
                 },
             };
-            const res= await axios.post(`${API_BASE}orders`, payload);
+            const res = await axios.post(`${API_BASE}orders`, payload);
             // console.log(res.data)
             const newOrderId = res.data.id;
             setSubmitSuccess(true);
+            Swal.fire({
+                title: "送出訂單成功",
+                icon: "success",
+                draggable: true,
+            });
             navigate(`/orderdetails/${newOrderId}`);
         } catch (e) {
-            console.error('送出訂單失敗', e);
-            setSubmitError('送出訂單失敗，請稍後再試');
+            Swal.fire({
+                title: "送出訂單失敗",
+                icon: "error",
+                draggable: true,
+                position: "top-end",
+                toast: true,
+                timer: 3000,
+                showConfirmButton: false,
+            });
+            setSubmitError('送出訂單失敗，請稍後再試', e);
         } finally {
             setSubmitting(false);
         }
