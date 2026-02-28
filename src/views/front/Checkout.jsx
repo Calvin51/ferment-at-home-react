@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-const BASE = 'https://ferment-at-home-data.onrender.com';
+const API_BASE = import.meta.env.VITE_API_BASE;
 const SHIPPING_FEE = 100;
 
 const Checkout = () => {
@@ -44,7 +44,7 @@ const Checkout = () => {
     useEffect(() => {
         const apiCart = async () => {
             try {
-                const res = await axios.get(`${BASE}/cart`)
+                const res = await axios.get(`${API_BASE}cart`)
                 console.log(res.data)
                 setCart(res.data)
             } catch (err) {
@@ -154,7 +154,7 @@ const Checkout = () => {
                     id: item.id,
                     name: item.title,
                     size:item.size?.inchs||item.selectedOptions?.size?.name,
-                    price: Number(item.totalPrice),
+                    price: Number(item.totalPrice)?Number(item.totalPrice):Number(item.size?.price),
                     qty: Number(item.quantity),
                     subtotal: Number(item.totalPrice) * Number(item.quantity),
                 })),
@@ -177,7 +177,8 @@ const Checkout = () => {
                     grandTotal,
                 },
             };
-            const res= await axios.post(`${BASE}/orders`, payload);
+            const res= await axios.post(`${API_BASE}orders`, payload);
+            // console.log(res.data)
             const newOrderId = res.data.id;
             setSubmitSuccess(true);
             navigate(`/orderdetails/${newOrderId}`);
@@ -294,6 +295,7 @@ const Checkout = () => {
                                                 type="text"
                                                 className={`form-control rounded-2 py-3 ${errors.lastName ? 'is-invalid' : ''}`}
                                                 placeholder="Hung"
+                                                defaultValue={"Hung"}
                                                 {...register('lastName', { required: '請輸入姓氏' })}
                                             />
                                             {errors.lastName && <div className="invalid-feedback">{errors.lastName.message}</div>}
@@ -328,6 +330,7 @@ const Checkout = () => {
                                                 type="email"
                                                 className={`form-control rounded-2 py-3 ${errors.email ? 'is-invalid' : ''}`}
                                                 placeholder="example@gmail.com"
+                                                defaultValue={"alicehung@gmail.com"}
                                                 {...register('email', {
                                                     required: '請輸入 Email',
                                                     pattern: { value: /^\S+@\S+\.\S+$/, message: 'Email 格式不正確' },
