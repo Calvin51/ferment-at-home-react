@@ -1,23 +1,19 @@
-import React from "react";
-import heroPhoto from "../../assets/images/hero.png";
 import lineSmall from "../../assets/images/line-small.png";
-import storyImage from "../../assets/images/story-image.png";
 import mapImage from "../../assets/images/mapImage.png";
 import externalLink from "../../assets/images/external-link.svg";
 import valueFirstTime from "../../assets/images/value-1.png";
 import valueFamily from "../../assets/images/value-2.png";
 import valuePizzaTime from "../../assets/images/value-3.png";
+import bigLogo from "../../assets/images/logo-story-big.png";
+import videoFrame from "../../assets/images/video_frame_169.svg";
 // import axios from "axios";
 
 const About = () => {
   return (
     <>
-      <div className="container-fluid px-0">
-        <img
-          src={heroPhoto}
-          alt="品牌故事首圖"
-          style={{ width: "100%", objectFit: "cover" }}
-        />
+      {/* container-fluid px-0 */}
+      <div className="about-container about-hero-photo d-flex justify-content-center align-items-center">
+        <img src={bigLogo} alt="" />
       </div>
       {/* Our Story */}
       <div className="container-fluid py-6 py-md-10">
@@ -28,12 +24,8 @@ const About = () => {
             </h2>
             <img src={lineSmall} alt="底線" />
           </div>
-          <div className="mb-8">
-            <img
-              src={storyImage}
-              alt="我們的故事圖"
-              style={{ width: "65%", objectFit: "cover" }}
-            />
+          <div className="about-story-image mx-auto mb-6 mb-lg-8">
+            <img src={videoFrame} alt="手繪框" className="d-block w-100" />
           </div>
           <div className="mb-5">
             <p className="mb-3">
