@@ -214,7 +214,7 @@ const Checkout = () => {
         );
     }
     return (<>
-        <main className="bg-gray-50 py-md-10 py-5">
+        <main className="bg-gray-50 mt-md-10 mt-8 py-md-10 py-5">
             <section>
                 <div className="container">
                     <div className="text-center pb-md-11 pb-7">

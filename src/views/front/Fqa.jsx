@@ -193,7 +193,7 @@ const Fqa = () => {
 
     return (
         <>
-            <main className="bg-gray-50 py-lg-10 py-5">
+            <main className="bg-gray-50 mt-md-10 mt-8 py-lg-10 py-5">
                 <section>
                     <div className="container">
                         <div className="text-center pb-lg-11 pb-7">
