@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import logoSmall from "../assets/images/logo-small.png";
 import whiteLogo from "../assets/images/logo-110-112.png";
 import userSelfie from "../assets/images/user-selfie.png";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const FrontEndLayout = () => {
   // 登入狀態管理
@@ -12,6 +14,51 @@ const FrontEndLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  // 身分驗證
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        // 讀取 Cookie
+        const token = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("pizzaToken="))
+          ?.split("=")[1];
+        // console.log("目前token", token);
+        // 先寫死id之後改
+        const res = await axios.get(
+          `https://json-server-auth-ferment.onrender.com/600/users/1`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // 注意 Bearer 後方有一個空格
+            },
+          },
+        );
+        // console.log(res.status);
+        if (res.status === 200) {
+          setIsAuth(true);
+        } else {
+          return;
+        }
+      } catch (error) {
+        setIsAuth(false);
+        // Swal.fire({
+        //   title: "身分驗證失敗!",
+        //   text: "請重新登入",
+        //   icon: "error",
+        //   confirmButtonText: "OK",
+        // });
+        // navigate("/login");
+      }
+    };
+    checkLogin();
+  }, []);
+
+  // 登出
+  const handleLogout = () => {
+    setIsAuth(false);
+    document.cookie = `pizzaToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  };
 
   return (
     <>
@@ -173,7 +220,7 @@ const FrontEndLayout = () => {
                       <NavLink
                         className="nav-link fw-bold text-primary"
                         to="/"
-                        onClick={() => setIsAuth(false)}
+                        onClick={() => handleLogout()}
                       >
                         登出
                       </NavLink>
@@ -220,7 +267,7 @@ const FrontEndLayout = () => {
                           id="logoutBtn"
                           className="dropdown-item my-3"
                           to="/"
-                          onClick={() => setIsAuth(false)}
+                          onClick={() => handleLogout()}
                         >
                           <i className="bi bi-box-arrow-right me-1"></i> 登出
                         </Link>

@@ -13,7 +13,7 @@ const Login = () => {
   // });
 
   // 登入狀態管理
-  // 從 context 中解構出 isAuth, setIsAuth
+  // 從 context 中解構出 isAuth, setIsAuth, userId, setUserId
   const [isAuth, setIsAuth] = useOutletContext();
 
   const navigate = useNavigate();
@@ -49,7 +49,6 @@ const Login = () => {
         "https://json-server-auth-ferment.onrender.com/login",
         formData,
       );
-      //   console.log(response);
 
       const { accessToken } = response.data;
       // 設定 Cookie (max-age=3600: 強制讓 Cookie 有效存在 1 小時，與 Token 同步。 SameSite=Strict: 防止 CSRF 攻擊。)
