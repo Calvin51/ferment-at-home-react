@@ -35,9 +35,6 @@ const Checkout = () => {
             letters[Math.floor(Math.random() * 26)] +
             letters[Math.floor(Math.random() * 26)];
 
-        letters[Math.floor(Math.random() * 26)] +
-            letters[Math.floor(Math.random() * 26)];
-
         const numbers = Math.floor(10000000 + Math.random() * 90000000);
         return `${prefix}-${numbers}`;
     };
@@ -180,7 +177,7 @@ const Checkout = () => {
                     grandTotal,
                 },
             };
-            const res = await axios.post(`${API_BASE}/orders`, payload);
+            const res = await axios.post(`${API_BASE}orders`, payload);
             const newOrderId = res.data.id;
             setSubmitSuccess(true);
             Swal.fire({
