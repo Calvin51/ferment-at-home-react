@@ -35,6 +35,9 @@ const Checkout = () => {
             letters[Math.floor(Math.random() * 26)] +
             letters[Math.floor(Math.random() * 26)];
 
+        letters[Math.floor(Math.random() * 26)] +
+            letters[Math.floor(Math.random() * 26)];
+
         const numbers = Math.floor(10000000 + Math.random() * 90000000);
         return `${prefix}-${numbers}`;
     };
@@ -154,7 +157,7 @@ const Checkout = () => {
                     id: item.id,
                     name: item.title,
                     size: item.size?.inchs || item.selectedOptions?.size?.name,
-                    price: Number(item.totalPrice) ? Number(item.totalPrice) : Number(item.size?.price),
+                    price: Number(item.totalPrice),
                     qty: Number(item.quantity),
                     subtotal: Number(item.totalPrice) * Number(item.quantity),
                 })),
@@ -177,8 +180,7 @@ const Checkout = () => {
                     grandTotal,
                 },
             };
-            const res = await axios.post(`${API_BASE}orders`, payload);
-            // console.log(res.data)
+            const res = await axios.post(`${API_BASE}/orders`, payload);
             const newOrderId = res.data.id;
             setSubmitSuccess(true);
             Swal.fire({
@@ -217,7 +219,7 @@ const Checkout = () => {
         <main className="bg-gray-50 mt-md-10 mt-8 py-md-10 py-5">
             <section>
                 <div className="container">
-                    <div className="text-center pb-md-11 pb-7">
+                    <div className="text-center pb-md-11 pb-7 mt-9 mt-md-1">
                         <h2 className="h2 fw-bold answer-font">checkout</h2>
                         <img
                             className="mx-auto d-block"
@@ -226,11 +228,11 @@ const Checkout = () => {
                         />
                         <div className="d-lg-block form-checked rounded-3 mt-lg-11">
                             <div className='text-start'>
-                                <form onSubmit={handleSubmit(onSubmit)}>
+                                <form onSubmit={handleSubmit(onSubmit)} className="px-md-4">
                                     <div className='row'>
-                                        <h3 className="text-font text-primary ms-md-6 mb-lg-5 mt-md-8">Payment Method</h3>
+                                        <h3 className="text-font text-primary mb-lg-5 mt-md-8">Payment Method</h3>
                                         {paymentOptions.map(({ value, label }) => (
-                                            <div className="col-12 ps-md-8" key={value}>
+                                            <div className="col-12" key={value}>
                                                 <div className="form-check">
                                                     <input
                                                         className={`form-check-input ${errors.paymentMethod ? 'is-invalid' : ''}`}
@@ -245,12 +247,12 @@ const Checkout = () => {
                                         ))}
                                         {/* 錯誤提示 */}
                                         {errors.paymentMethod && (
-                                            <div className='col-12 ps-md-8'>
+                                            <div className='col-12'>
                                                 <p className='text-danger mt-1'>{errors.paymentMethod.message}</p>
                                             </div>
                                         )}
-                                        <h3 className='text-font text-primary ms-md-6 mb-md-5 mt-md-8'>Shipping Method</h3>
-                                        <div className="col-12 col-md-6 mb-3 ps-md-8">
+                                        <h3 className='text-font text-primary mb-md-5 mt-md-8'>Shipping Method</h3>
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className="form-label">配送方式</label>
                                             <select
                                                 className={`form-select rounded-2 py-3 ${errors.shippingMethod ? 'is-invalid' : ''}`}
@@ -265,7 +267,7 @@ const Checkout = () => {
                                                 <div className="invalid-feedback">{errors.shippingMethod.message}</div>
                                             )}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3 pe-md-8">
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className={`form-label ${!selectedShipping ? 'text-muted' : ''}`}>配送時段</label>
                                             <select
                                                 className={`form-select rounded-2 py-3 ${errors.timeSlot ? 'is-invalid' : ''}`}
@@ -283,7 +285,7 @@ const Checkout = () => {
                                         </div>
                                         {/* 超商取貨門市 */}
                                         {(selectedShipping === '7-11 超商取貨' || selectedShipping === '全家超商取貨') && (
-                                            <div className="col-12 ps-md-8 mb-3">
+                                            <div className="col-12 mb-3">
                                                 <label className="form-label">取貨門市</label>
                                                 <div className="d-flex align-items-center gap-3">
                                                     <button
@@ -300,9 +302,9 @@ const Checkout = () => {
                                             </div>
                                         )}
                                         {/* Shipping Address */}
-                                        <h3 className='text-font text-primary ms-md-6 mb-md-5 mt-md-8'>Shipping Address</h3>
+                                        <h3 className='text-font text-primary mb-md-5 mt-md-8'>Shipping Address</h3>
 
-                                        <div className="col-12 col-md-6 mb-3 ps-md-8">
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className="form-label">姓氏</label>
                                             <input
                                                 type="text"
@@ -313,7 +315,7 @@ const Checkout = () => {
                                             />
                                             {errors.lastName && <div className="invalid-feedback">{errors.lastName.message}</div>}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3 pe-md-8">
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className="form-label">名字</label>
                                             <input
                                                 type="text"
@@ -324,7 +326,7 @@ const Checkout = () => {
                                             {errors.firstName && <div className="invalid-feedback">{errors.firstName.message}</div>}
                                         </div>
 
-                                        <div className="col-12 col-md-6 mb-3 ps-md-8">
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className="form-label">電話</label>
                                             <input
                                                 type="tel"
@@ -337,7 +339,7 @@ const Checkout = () => {
                                             />
                                             {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3 pe-md-8">
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className="form-label">Email</label>
                                             <input
                                                 type="email"
@@ -352,7 +354,7 @@ const Checkout = () => {
                                             {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                                         </div>
 
-                                        <div className="col-12 col-md-6 mb-3 ps-md-8">
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className="form-label">縣市</label>
                                             <select
                                                 className={`form-select rounded-2 py-3 ${errors.city ? 'is-invalid' : ''}`}
@@ -365,7 +367,7 @@ const Checkout = () => {
                                             </select>
                                             {errors.city && <div className="invalid-feedback">{errors.city.message}</div>}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3 pe-md-8">
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className="form-label">鄉鎮市區</label>
                                             <select
                                                 className={`form-select rounded-2 py-3 ${errors.district ? 'is-invalid' : ''}`}
@@ -379,7 +381,7 @@ const Checkout = () => {
                                             {errors.district && <div className="invalid-feedback">{errors.district.message}</div>}
                                         </div>
 
-                                        <div className="col-12 col-md-6 mb-3 ps-md-8">
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className="form-label">郵遞區號</label>
                                             <input
                                                 type="text"
@@ -389,7 +391,7 @@ const Checkout = () => {
                                             />
                                             {errors.zipCode && <div className="invalid-feedback">{errors.zipCode.message}</div>}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3 pe-md-8">
+                                        <div className="col-12 col-md-6 mb-3">
                                             <label className="form-label">地址</label>
                                             <input
                                                 type="text"
@@ -401,8 +403,8 @@ const Checkout = () => {
                                         </div>
                                     </div>
 
-                                    <h3 className='text-font text-primary ms-md-6 mb-md-5 mt-md-8'>Payment Details</h3>
-                                    <div className="col-12 ps-md-6 pe-md-6 mb-4">
+                                    <h3 className='text-font text-primary mb-md-5 mt-md-8'>Payment Details</h3>
+                                    <div className="col-12 mb-4">
                                         {cartLoading ? (
                                             <p className="text-muted">載入購物車中...</p>
                                         ) : (
@@ -424,12 +426,12 @@ const Checkout = () => {
                                     </div>
 
                                     {submitError && (
-                                        <div className="col-12 ps-md-8">
+                                        <div className="col-12">
                                             <p className="text-danger">{submitError}</p>
                                         </div>
                                     )}
 
-                                    <div className="d-grid gap-2 px-lg-6">
+                                    <div className="d-grid gap-2">
                                         <button
                                             type='submit'
                                             className='btn btn-primary rounded-pill fs-8 py-2 mb-md-8'
