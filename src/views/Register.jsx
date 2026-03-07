@@ -3,6 +3,7 @@ import axios from "axios";
 import lineSmall from "../assets/images/line-small.png";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const Register = () => {
   // 管理表單資料
@@ -40,15 +41,26 @@ const Register = () => {
   const onSubmit = async (formData) => {
     try {
       // e.preventDefault(); //避免onSubmit預設事件
-      const response = await axios.post(
+      await axios.post(
         "https://json-server-auth-ferment.onrender.com/register",
         formData,
       );
-      alert("註冊成功，前往登入");
+      Swal.fire({
+        title: "註冊成功!",
+        text: "歡迎加入~",
+        icon: "success",
+        confirmButtonText: "前往登入",
+      });
       navigate("/login");
       // console.log(response);
     } catch (error) {
-      alert("註冊失敗", error.response);
+      Swal.fire({
+        title: "登入失敗!",
+        text: "帳號或密碼輸入錯誤",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      console.log(error.response.data);
     }
   };
 

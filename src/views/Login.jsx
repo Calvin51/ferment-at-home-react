@@ -78,6 +78,7 @@ const Login = () => {
         icon: "error",
         confirmButtonText: "OK",
       });
+      console.log(error.response.data);
       console.log(isAuth);
     }
   };
