@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 const AccountManage = () => {
   // 登入狀態管理
   // 從 context 中解構出 isAuth, setIsAuth
-  const [isAuth, setIsAuth] = useOutletContext();
+  const [isAuth] = useOutletContext();
 
   const navigate = useNavigate();
 
