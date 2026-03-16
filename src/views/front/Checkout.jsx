@@ -249,7 +249,7 @@ const Checkout = () => {
                                             </div>
                                         )}
                                         <h3 className='text-font text-primary mb-md-5 mt-md-8'>Shipping Method</h3>
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className="form-label">配送方式</label>
                                             <select
                                                 className={`form-select rounded-2 py-3 ${errors.shippingMethod ? 'is-invalid' : ''}`}
@@ -264,7 +264,7 @@ const Checkout = () => {
                                                 <div className="invalid-feedback">{errors.shippingMethod.message}</div>
                                             )}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className={`form-label ${!selectedShipping ? 'text-muted' : ''}`}>配送時段</label>
                                             <select
                                                 className={`form-select rounded-2 py-3 ${errors.timeSlot ? 'is-invalid' : ''}`}
@@ -301,7 +301,7 @@ const Checkout = () => {
                                         {/* Shipping Address */}
                                         <h3 className='text-font text-primary mb-md-5 mt-md-8'>Shipping Address</h3>
 
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className="form-label">姓氏</label>
                                             <input
                                                 type="text"
@@ -312,7 +312,7 @@ const Checkout = () => {
                                             />
                                             {errors.lastName && <div className="invalid-feedback">{errors.lastName.message}</div>}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className="form-label">名字</label>
                                             <input
                                                 type="text"
@@ -323,7 +323,7 @@ const Checkout = () => {
                                             {errors.firstName && <div className="invalid-feedback">{errors.firstName.message}</div>}
                                         </div>
 
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className="form-label">電話</label>
                                             <input
                                                 type="tel"
@@ -336,7 +336,7 @@ const Checkout = () => {
                                             />
                                             {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className="form-label">Email</label>
                                             <input
                                                 type="email"
@@ -351,7 +351,7 @@ const Checkout = () => {
                                             {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                                         </div>
 
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className="form-label">縣市</label>
                                             <select
                                                 className={`form-select rounded-2 py-3 ${errors.city ? 'is-invalid' : ''}`}
@@ -364,7 +364,7 @@ const Checkout = () => {
                                             </select>
                                             {errors.city && <div className="invalid-feedback">{errors.city.message}</div>}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className="form-label">鄉鎮市區</label>
                                             <select
                                                 className={`form-select rounded-2 py-3 ${errors.district ? 'is-invalid' : ''}`}
@@ -378,7 +378,7 @@ const Checkout = () => {
                                             {errors.district && <div className="invalid-feedback">{errors.district.message}</div>}
                                         </div>
 
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className="form-label">郵遞區號</label>
                                             <input
                                                 type="text"
@@ -388,7 +388,7 @@ const Checkout = () => {
                                             />
                                             {errors.zipCode && <div className="invalid-feedback">{errors.zipCode.message}</div>}
                                         </div>
-                                        <div className="col-12 col-md-6 mb-3">
+                                        <div className="col-md-6 mb-3">
                                             <label className="form-label">地址</label>
                                             <input
                                                 type="text"
