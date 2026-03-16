@@ -62,18 +62,18 @@ const ingredientImages = {
 const Products = () => {
   // state
   const [sauceList, setSauceList] = useState([]);
-  const [selectedSauce, setSelectedSauce] = useState([]);
+  const [selectedSauce, setSelectedSauce] = useState(null);
   const [pizzaSizesList, setPizzaSizesList] = useState([]);
-  const [selectedPizzaSizes, setSelectedPizzaSizes] = useState([]);
+  const [selectedPizzaSizes, setSelectedPizzaSizes] = useState(null);
   const [pizzaCrustsList, setPizzaCrustsList] = useState([]);
-  const [selectedPizzaCrusts, setSelectedPizzaCrusts] = useState([]);
+  const [selectedPizzaCrusts, setSelectedPizzaCrusts] = useState(null);
   const [cheeseTypesList, setCheeseTypesList] = useState([]);
-  const [selectedCheeseTypes, setSelectedCheeseTypes] = useState([]);
+  const [selectedCheeseTypes, setSelectedCheeseTypes] = useState(null);
   const [toppingCombosList, setToppingCombosList] = useState([]);
-  const [selectedToppingCombos, setSelectedToppingCombos] = useState([]);
+  const [selectedToppingCombos, setSelectedToppingCombos] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
 
-  const basePrice = 0; // 基本價格
+  const basePrice = 0;
   const total =
     basePrice +
     (selectedPizzaSizes?.price || 0) +
@@ -117,8 +117,9 @@ const Products = () => {
     try {
       await axios.post(`${API_BASE}cart`, cartData);
       navigate("/cart");
-    } catch (error) {
-      console.log(error.message);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch {
+      alert("加入購物車失敗，請稍後再試");
     }
   };
 
@@ -131,8 +132,8 @@ const Products = () => {
         setPizzaCrustsList(res.data.pizzaCrusts);
         setCheeseTypesList(res.data.cheeseTypes);
         setToppingCombosList(res.data.toppingCombos);
-      } catch (error) {
-        console.log(error.message);
+      } catch {
+        alert("資料載入失敗，請重新整理頁面");
       }
     };
     getProducts();
@@ -173,7 +174,7 @@ const Products = () => {
               </div>
               <div className="row flex-nowrap overflow-x-auto">
                 {sauceList.map((sauce) => (
-                  <div className="col-12 col-md-4" key={sauce.id}>
+                  <div className="col-md-4" key={sauce.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
                         selectedSauce?.id === sauce.id ? "bg-secondary-100" : ""
@@ -196,7 +197,7 @@ const Products = () => {
                             </a>
                           </div>
                           <img
-                            src={sauceImages[[sauce.id]]} // 圖片未上傳至遠端資料庫的方法
+                            src={sauceImages[[sauce.id]]}
                             alt={sauce.title}
                             className="mw-100"
                           />
@@ -222,7 +223,6 @@ const Products = () => {
                 </div>
               </div>
             </div>
-            {/* 選擇尺寸餅皮起司 */}
             <div className="col-12 col-md-9 px-0">
               {/* 尺寸 */}
               <div className="d-flex align-items-center mb-3">
@@ -235,7 +235,7 @@ const Products = () => {
               </div>
               <div className="row flex-nowrap overflow-x-auto mb-3 mb-md-5">
                 {pizzaSizesList.map((pizzaSizes) => (
-                  <div className="col-12 col-md-4" key={pizzaSizes.id}>
+                  <div className="col-md-4" key={pizzaSizes.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
                         selectedPizzaSizes?.id === pizzaSizes.id
@@ -265,7 +265,7 @@ const Products = () => {
                             </a>
                           </div>
                           <img
-                            src={pizzaSizesImages[[pizzaSizes.id]]} // 圖片未上傳至遠端資料庫的方法
+                            src={pizzaSizesImages[[pizzaSizes.id]]}
                             alt={pizzaSizes.title}
                             className="mw-100"
                           />
@@ -288,7 +288,7 @@ const Products = () => {
               </div>
               <div className="row flex-nowrap overflow-x-auto mb-3 mb-md-5">
                 {pizzaCrustsList.map((pizzaCrusts) => (
-                  <div className="col-12 col-md-4" key={pizzaCrusts.id}>
+                  <div className="col-md-4" key={pizzaCrusts.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
                         selectedPizzaCrusts?.id === pizzaCrusts.id
@@ -314,7 +314,7 @@ const Products = () => {
                           </a>
                         </div>
                         <img
-                          src={pizzaCrustsImages[[pizzaCrusts.id]]} // 圖片未上傳至遠端資料庫的方法
+                          src={pizzaCrustsImages[[pizzaCrusts.id]]}
                           alt={pizzaCrusts.crust}
                           className="mw-100"
                         />
@@ -336,7 +336,7 @@ const Products = () => {
               </div>
               <div className="row flex-nowrap overflow-x-auto">
                 {cheeseTypesList.map((cheeseTypes) => (
-                  <div className="col-12 col-md-4" key={cheeseTypes.id}>
+                  <div className="col-md-4" key={cheeseTypes.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
                         selectedCheeseTypes?.id === cheeseTypes.id
@@ -362,7 +362,7 @@ const Products = () => {
                           </a>
                         </div>
                         <img
-                          src={cheeseTypesImages[[cheeseTypes.id]]} // 圖片未上傳至遠端資料庫的方法
+                          src={cheeseTypesImages[[cheeseTypes.id]]}
                           alt={cheeseTypes.name}
                           className="mw-100"
                         />
@@ -399,9 +399,8 @@ const Products = () => {
                 </div>
               </div>
               <div className="row flex-nowrap overflow-x-auto mb-3 mb-md-5">
-                {/* 海鮮派對 */}
                 {toppingCombosList.map((toppingCombos) => (
-                  <div className="col-12 col-md-4" key={toppingCombos.id}>
+                  <div className="col-md-4" key={toppingCombos.id}>
                     <div
                       className={`card-body text-center p-5 rounded-4 ${
                         selectedToppingCombos?.id === toppingCombos.id

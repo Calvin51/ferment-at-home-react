@@ -1,5 +1,5 @@
 import { createHashRouter } from "react-router-dom";
-import Products from "./views/front/products";
+import Products from "./views/front/Products";
 import About from "./views/front/About";
 import Fqa from "./views/front/Fqa";
 import FrontEndLayout from "./layout/FrontEndLayout";
