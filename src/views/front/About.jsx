@@ -6,14 +6,13 @@ import valueFamily from "../../assets/images/value-2.png";
 import valuePizzaTime from "../../assets/images/value-3.png";
 import bigLogo from "../../assets/images/logo-story-big.png";
 import videoFrame from "../../assets/images/video_frame_169.svg";
-// import axios from "axios";
 
 const About = () => {
   return (
     <>
       {/* container-fluid px-0 */}
       <div className="about-container about-hero-photo d-flex justify-content-center align-items-center">
-        <img src={bigLogo} alt="" />
+        <img src={bigLogo} alt="LOGO" />
       </div>
       {/* Our Story */}
       <div className="container-fluid py-6 py-md-10">
@@ -88,7 +87,7 @@ const About = () => {
           </div>
         </div>
       </div>
-      {/* Our Story */}
+      {/* Made For */}
       <div className="container-fluid py-6 py-md-10">
         <div className="container text-center">
           <div className="mb-6 mb-md-8">
@@ -98,7 +97,7 @@ const About = () => {
             <img src={lineSmall} alt="底線" />
           </div>
           <div className="row text-center">
-            <div className="col-12 col-md-4">
+            <div className="col-md-4">
               <img
                 src={valueFirstTime}
                 alt="給第一次做Pizza的人"
@@ -111,7 +110,7 @@ const About = () => {
                 </span>
               </div>
             </div>
-            <div className="col-12 col-md-4">
+            <div className="col-md-4">
               <img
                 src={valueFamily}
                 alt="給想和家人一起下廚的人"
@@ -122,7 +121,7 @@ const About = () => {
                 <span className="fs-8">把下廚，變成一段可以一起記住的時光</span>
               </div>
             </div>
-            <div className="col-12 col-md-4">
+            <div className="col-md-4">
               <img
                 src={valuePizzaTime}
                 alt="給想慢慢來、享受過程的人"
