@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import logoSmall from "../assets/images/logo-small.png";
 import whiteLogo from "../assets/images/logo-110-112.png";
 import userSelfie from "../assets/images/user-selfie.png";
 import axios from "axios";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
 const FrontEndLayout = () => {
   // 登入狀態管理
@@ -13,7 +13,7 @@ const FrontEndLayout = () => {
   // 手機版漢堡選單開關狀態管理
   const [isOpen, setIsOpen] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // 身分驗證
   useEffect(() => {
@@ -40,7 +40,7 @@ const FrontEndLayout = () => {
         } else {
           return;
         }
-      } catch (error) {
+      } catch {
         setIsAuth(false);
         // Swal.fire({
         //   title: "身分驗證失敗!",
@@ -122,7 +122,10 @@ const FrontEndLayout = () => {
                       </NavLink>
                     </li>
                     <li className="nav-item me-5 d-block d-lg-none">
-                      <NavLink className="nav-link fw-bold text-primary" to="#">
+                      <NavLink
+                        className="nav-link fw-bold text-primary"
+                        to="/login"
+                      >
                         登入/註冊
                       </NavLink>
                     </li>
