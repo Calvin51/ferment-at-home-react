@@ -31,7 +31,6 @@ const OrderDetails = () => {
         const getOrderDetails = async () => {
             try {
                 const res = await axios.get(`${API_BASE}orders/${id}`)
-                console.log(res.data.products);
                 setDetail(res.data);
                 setOrderProduct(res.data.products)
             } catch (error) {
