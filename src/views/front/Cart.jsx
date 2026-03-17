@@ -53,7 +53,6 @@ const Cart = () => {
     const getCart = async () => {
       try {
         const res = await axios.get(`${API_BASE}cart`);
-        // console.log(res.data);
         setCartList(res.data);
       } catch (error) {
         console.log(error.message);
@@ -82,7 +81,6 @@ const Cart = () => {
       const res = await axios.put(`${API_BASE}cart/${item.id}`,updatedItem);
       console.log(res.data)
       const response = await axios.get(`${API_BASE}cart`);
-        // console.log(res.data);
         setCartList(response.data);
   
     } catch (error) {
@@ -135,6 +133,7 @@ const Cart = () => {
       console.log(res.data);
       const response = await axios.get(`${API_BASE}cart`);
       setCartList(response.data);
+      Swal.fire("成功刪除產品！");
     } catch (error) {
       console.log(error.message);
     }
@@ -247,7 +246,6 @@ const Cart = () => {
               {/* 購物項目 */}
               <ul className="list-unstyled p-5 border border-4 border-secondary-300 rounded-3">
                 {cartList.map((item, index) => {
-                  console.log(item)
                   return (
 
                     <li
