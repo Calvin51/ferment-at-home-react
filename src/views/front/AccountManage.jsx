@@ -2,7 +2,7 @@ import lineSmall from "../../assets/images/line-small.png";
 import userSelfie from "../../assets/images/user-selfie.png";
 import upgradeBar from "../../assets/images/upgrade-bar.png";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
 const AccountManage = () => {
   // 登入狀態管理
@@ -36,7 +36,7 @@ const AccountManage = () => {
               <h2 className="section-title fs-2 fs-lg-1 text-primary">
                 My Account
               </h2>
-              <img src={lineSmall} alt="" />
+              <img src={lineSmall} alt="分隔線" />
             </div>
             {/* 頭像 */}
             <div className="mb-7 mb-lg-8">
@@ -110,7 +110,11 @@ const AccountManage = () => {
                   </div>
                   <div>
                     <p className="mb-3">還差 NT$ 7,200</p>
-                    <img src={upgradeBar} alt="" className="upgrade-bar mb-3" />
+                    <img
+                      src={upgradeBar}
+                      alt="進度條"
+                      className="upgrade-bar mb-3"
+                    />
                     <div className="d-flex">
                       <p className="me-auto">Topping Master</p>
                       <p>Pizza Legend</p>

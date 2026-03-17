@@ -5,6 +5,16 @@ import Swal from "sweetalert2";
 
 import lineSmall from "../assets/images/line-small.png";
 
+// 設定cookie用的函式
+const setAuthSession = (accessToken) => {
+  if (accessToken) {
+    // 設定 Cookie (max-age=3600: 強制讓 Cookie 有效存在 1 小時，與 Token 同步。 SameSite=Strict: 防止 CSRF 攻擊。)
+    document.cookie = `pizzaToken=${accessToken}; SameSite=Strict; Secure; max-age=3600`;
+    // 修改實體建立時所指派的預設配置
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+  }
+};
+
 const Login = () => {
   // 管理表單資料
   // const [formData, setFormData] = useState({
@@ -14,7 +24,7 @@ const Login = () => {
 
   // 登入狀態管理
   // 從 context 中解構出 isAuth, setIsAuth, userId, setUserId
-  const [isAuth, setIsAuth] = useOutletContext();
+  const [setIsAuth] = useOutletContext();
 
   const navigate = useNavigate();
 
@@ -51,10 +61,7 @@ const Login = () => {
       );
 
       const { accessToken } = response.data;
-      // 設定 Cookie (max-age=3600: 強制讓 Cookie 有效存在 1 小時，與 Token 同步。 SameSite=Strict: 防止 CSRF 攻擊。)
-      document.cookie = `pizzaToken=${accessToken}; SameSite=Strict; Secure; max-age=3600`;
-      // 修改實體建立時所指派的預設配置
-      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+      setAuthSession(accessToken);
 
       // // 讀取 Cookie
       //   const token = document.cookie
@@ -79,7 +86,6 @@ const Login = () => {
         confirmButtonText: "OK",
       });
       console.log(error.response.data);
-      console.log(isAuth);
     }
   };
 

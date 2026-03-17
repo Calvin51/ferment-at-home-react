@@ -71,7 +71,7 @@ const Register = () => {
           <h1 className="section-title fs-2 fs-lg-1 text-primary ">
             Member Register
           </h1>
-          <img src={lineSmall} alt="" />
+          <img src={lineSmall} alt="分隔線" />
         </div>
 
         <form className="form-floating" onSubmit={handleSubmit(onSubmit)}>

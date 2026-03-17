@@ -105,7 +105,7 @@ const Home = () => {
             <h2 className="section-title fs-2 fs-lg-1 text-primary">
               Latest News
             </h2>
-            <img src={lineSmall} alt="" />
+            <img src={lineSmall} alt="分隔線" />
           </div>
           {/* <!-- 消息內容 --> */}
           <ul className="list-unstyled mb-5 mb-lg-8">
@@ -117,7 +117,7 @@ const Home = () => {
                 <p className="fs-9 fs-lg-8 news-text">
                   全新｜創意家庭派對包限量開賣！
                 </p>
-                <img src={arrowRightCircle} alt="" className="ms-auto" />
+                <img src={arrowRightCircle} alt="icon" className="ms-auto" />
               </div>
             </li>
             <li className="d-flex align-items-center border-dashed">
@@ -128,7 +128,7 @@ const Home = () => {
                 <p className="fs-9 fs-lg-8 news-text">
                   週末直播｜一起做 Pizza，零失敗上手！
                 </p>
-                <img src={arrowRightCircle} alt="" className="ms-auto" />
+                <img src={arrowRightCircle} alt="icon" className="ms-auto" />
               </div>
             </li>
             <li className="d-flex align-items-center border-dashed">
@@ -139,7 +139,7 @@ const Home = () => {
                 <p className="fs-9 fs-lg-8 news-text">
                   秋季限定｜客製口味披薩包，讓家變披薩工坊
                 </p>
-                <img src={arrowRightCircle} alt="" className="ms-auto" />
+                <img src={arrowRightCircle} alt="icon" className="ms-auto" />
               </div>
             </li>
           </ul>
@@ -163,7 +163,7 @@ const Home = () => {
             <h2 className="section-title fs-2 fs-lg-1 text-primary">
               Our Story
             </h2>
-            <img src={lineSmall} alt="" />
+            <img src={lineSmall} alt="分隔線" />
           </div>
           {/* <!-- 圖片區 改 --> */}
           <div className="story-image mx-auto mb-6 mb-lg-8">
@@ -211,7 +211,7 @@ const Home = () => {
             <h2 className="section-title fs-2 fs-lg-1 text-primary">
               Pizza Quartet
             </h2>
-            <img src={lineSmall} alt="" />
+            <img src={lineSmall} alt="分隔線" />
           </div>
           {/* <!-- 卡片區塊 --> */}
           <div className="row row-gap-4">
@@ -299,7 +299,7 @@ const Home = () => {
                   </h3>
                 </div>
                 <div className="step-one-bg mb-3 mb-lg-5">
-                  <img src={stepFrame} alt="" className="d-block w-100" />
+                  <img src={stepFrame} alt="手繪框" className="d-block w-100" />
                 </div>
                 <div>
                   <p className="fs-9 fs-lg-8 text-gray-950">
@@ -319,7 +319,7 @@ const Home = () => {
                   </h3>
                 </div>
                 <div className="step-two-bg mb-3 mb-lg-5">
-                  <img src={stepFrame} alt="" className="d-block w-100" />
+                  <img src={stepFrame} alt="手繪框" className="d-block w-100" />
                 </div>
                 <div>
                   <p className="fs-9 fs-lg-8 text-gray-950">
@@ -339,7 +339,7 @@ const Home = () => {
                   </h3>
                 </div>
                 <div className="step-three-bg mb-3 mb-lg-5">
-                  <img src={stepFrame} alt="" className="d-block w-100" />
+                  <img src={stepFrame} alt="手繪框" className="d-block w-100" />
                 </div>
                 <div>
                   <p className="fs-9 fs-lg-8 text-gray-950">
@@ -359,7 +359,7 @@ const Home = () => {
                   </h3>
                 </div>
                 <div className="step-four-bg mb-3 mb-lg-5">
-                  <img src={stepFrame} alt="" className="d-block w-100" />
+                  <img src={stepFrame} alt="手繪框" className="d-block w-100" />
                 </div>
                 <div>
                   <p className="fs-9 fs-lg-8 text-gray-950">
@@ -388,7 +388,7 @@ const Home = () => {
           <h2 className="section-title fs-2 fs-lg-1 text-primary">
             Pizza Moments
           </h2>
-          <img src={lineSmall} alt="" />
+          <img src={lineSmall} alt="分隔線" />
         </div>
         {/* <!-- 顧客回饋輪播 --> */}
         <Swiper
@@ -418,7 +418,7 @@ const Home = () => {
               <div className="mb-4">
                 <img
                   src={momentOne}
-                  alt=""
+                  alt="手繪框"
                   className="d-block w-100 rounded-4"
                 />
               </div>
@@ -433,7 +433,11 @@ const Home = () => {
               {/* <!-- 顧客評論 --> */}
               <div className="px-4 pb-4">
                 <div className="d-flex align-items-center mb-2">
-                  <img src={profilePicOne} alt="" className="d-block me-2" />
+                  <img
+                    src={profilePicOne}
+                    alt="頭像"
+                    className="d-block me-2"
+                  />
                   <p className="text-primary me-auto">吳小姐</p>
                   <p className="text-primary">2025.08.20</p>
                 </div>
@@ -449,7 +453,7 @@ const Home = () => {
               <div className="mb-4">
                 <img
                   src={momentTwo}
-                  alt=""
+                  alt="手繪框"
                   className="d-block w-100 rounded-4"
                 />
               </div>
@@ -464,7 +468,11 @@ const Home = () => {
               {/* <!-- 顧客評論 --> */}
               <div className="px-4 pb-4">
                 <div className="d-flex align-items-center mb-2">
-                  <img src={profilePicTwo} alt="" className="d-block me-2" />
+                  <img
+                    src={profilePicTwo}
+                    alt="頭像"
+                    className="d-block me-2"
+                  />
                   <p className="text-primary me-auto">王先生</p>
                   <p className="text-primary">2025.08.08</p>
                 </div>
@@ -480,7 +488,7 @@ const Home = () => {
               <div className="mb-4">
                 <img
                   src={momentThree}
-                  alt=""
+                  alt="手繪框"
                   className="d-block w-100 rounded-4"
                 />
               </div>
@@ -494,7 +502,11 @@ const Home = () => {
               {/* <!-- 顧客評論 --> */}
               <div className="px-4 pb-4">
                 <div className="d-flex align-items-center mb-2">
-                  <img src={profilePicThree} alt="" className="d-block me-2" />
+                  <img
+                    src={profilePicThree}
+                    alt="頭像"
+                    className="d-block me-2"
+                  />
                   <p className="text-primary me-auto">陳小姐</p>
                   <p className="text-primary">2025.07.30</p>
                 </div>
@@ -510,7 +522,7 @@ const Home = () => {
               <div className="mb-4">
                 <img
                   src={momentOne}
-                  alt=""
+                  alt="手繪框"
                   className="d-block w-100 rounded-4"
                 />
               </div>
@@ -525,7 +537,11 @@ const Home = () => {
               {/* <!-- 顧客評論 --> */}
               <div className="px-4 pb-4">
                 <div className="d-flex align-items-center mb-2">
-                  <img src={profilePicOne} alt="" className="d-block me-2" />
+                  <img
+                    src={profilePicOne}
+                    alt="頭像"
+                    className="d-block me-2"
+                  />
                   <p className="text-primary me-auto">黃小姐</p>
                   <p className="text-primary">2025.08.22</p>
                 </div>
