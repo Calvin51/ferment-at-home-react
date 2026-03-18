@@ -19,18 +19,18 @@ import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { ProgressBar } from "react-loader-spinner";
 
 // const API_BASE = "https://ferment-at-home-data.onrender.com/";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const productImages = {
-  "夏威夷披薩": pizzaHawaii,
-  "起司三重奏": pizzaCheese,
-  "瑪格麗特披薩": pizzaMargaret,
-  "全肉總匯披薩": pizzaMeat,
-  "海鮮總匯披薩": pizzaSeafood,
-  "客製化披薩": pizzaCustomerized
+  夏威夷披薩: pizzaHawaii,
+  起司三重奏: pizzaCheese,
+  瑪格麗特披薩: pizzaMargaret,
+  全肉總匯披薩: pizzaMeat,
+  海鮮總匯披薩: pizzaSeafood,
+  客製化披薩: pizzaCustomerized,
 };
 const shippingFee = 100;
 
@@ -38,13 +38,13 @@ const Cart = () => {
   const [cartList, setCartList] = useState([]);
   const [popList, setPopList] = useState([]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
   const handleCheckout = () => {
     setLoading(true);
-  
+
     setTimeout(() => {
       navigate("/checkout");
     }, 500);
@@ -76,29 +76,26 @@ const Cart = () => {
     try {
       const updatedItem = {
         ...item,
-        quantity: qty
-      }
-      const res = await axios.put(`${API_BASE}cart/${item.id}`,updatedItem);
-      console.log(res.data)
+        quantity: qty,
+      };
+      const res = await axios.put(`${API_BASE}cart/${item.id}`, updatedItem);
+      console.log(res.data);
       const response = await axios.get(`${API_BASE}cart`);
-        setCartList(response.data);
-  
+      setCartList(response.data);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
 
   const handleQtyChange = (item, newQty) => {
     const safeQty = Math.max(1, newQty);
-  
+
     const newCart = cartList.map((cartItem) =>
-      cartItem.id === item.id
-        ? { ...cartItem, quantity: safeQty }
-        : cartItem
+      cartItem.id === item.id ? { ...cartItem, quantity: safeQty } : cartItem,
     );
-  
+
     setCartList(newCart);
-  
+
     updateCart(item, safeQty); // 再同步資料庫
   };
 
@@ -107,20 +104,19 @@ const Cart = () => {
       productId: popItem.id,
       title: popItem.title,
       size: {
-          id: selectedSize.id,
-          inchs: selectedSize.inchs,
-          price: selectedSize.price
-        }
-      ,
-      quantity
+        id: selectedSize.id,
+        inchs: selectedSize.inchs,
+        price: selectedSize.price,
+      },
+      quantity,
     };
     try {
       const res = await axios.post(`${API_BASE}cart`, cartData);
-      setCartList(prev => [...prev, res.data]); // 更新畫面
+      setCartList((prev) => [...prev, res.data]); // 更新畫面
       Swal.fire({
         title: popItem.title,
         text: "成功加入購物車!",
-        icon: "success"
+        icon: "success",
       });
     } catch (error) {
       console.log(error.message);
@@ -141,10 +137,10 @@ const Cart = () => {
 
   const finalTotal = useMemo(() => {
     return cartList.reduce((sum, item) => {
-      const unitPrice = item.totalPrice ?? item.size?.price ?? 0
-      return sum + unitPrice * item.quantity
-    }, 0)
-  }, [cartList])
+      const unitPrice = item.totalPrice ?? item.size?.price ?? 0;
+      return sum + unitPrice * item.quantity;
+    }, 0);
+  }, [cartList]);
 
   const PopProductCard = ({ popItem }) => {
     const [selectedSize, setSelectedSize] = useState(popItem.size[0]);
@@ -152,7 +148,6 @@ const Cart = () => {
 
     const price = selectedSize?.price || 0;
     const total = price * quantity;
-
 
     return (
       <div className="card border-0 bg-secondary rounded-4 p-5">
@@ -171,25 +166,23 @@ const Cart = () => {
           <p className="card-text fs-8 text-gray-700 mb-5">
             {popItem.description}
           </p>
-          <p className="section-title text-primary fs-5 mb-5">
-            NT${total}
-          </p>
+          <p className="section-title text-primary fs-5 mb-5">NT${total}</p>
         </div>
         {/* 尺寸選擇 */}
         <div className="d-flex justify-content-center gap-2 mb-5">
-        {popItem.size.map((sizeItem) => (
-          <button
-            key={sizeItem.id}
-            className={`sizeChoose btn fs-8 ${
-              selectedSize?.id === sizeItem.id
-                ? "btn-gray-700"
-                : "btn-gray-100"
-            }`}
-            onClick={() => setSelectedSize(sizeItem)}
-          >
-            {sizeItem.inchs}
-          </button>
-        ))}
+          {popItem.size.map((sizeItem) => (
+            <button
+              key={sizeItem.id}
+              className={`sizeChoose btn fs-8 ${
+                selectedSize?.id === sizeItem.id
+                  ? "btn-gray-700"
+                  : "btn-gray-100"
+              }`}
+              onClick={() => setSelectedSize(sizeItem)}
+            >
+              {sizeItem.inchs}
+            </button>
+          ))}
         </div>
         {/* 數量選擇 */}
         <div className="d-flex gap-2 justify-content-center align-items-center">
@@ -198,20 +191,22 @@ const Cart = () => {
             style={{ width: 186 }}
           >
             <div className="input-group my-2 justify-content-center">
-              <button className="btn p-3"
-              onClick={() =>
-                setQuantity(prev => (prev > 1 ? prev - 1 : 1))
-              }>
+              <button
+                className="btn p-3"
+                onClick={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
+              >
                 <img src={minus} alt="少一個" />
               </button>
               <input
                 type="text"
-                value={quantity} 
+                value={quantity}
                 className="quantity-input section-title fs-5"
                 style={{ width: 74 }}
               />
-              <button className="btn p-3"
-              onClick={() => setQuantity(prev => prev + 1)}>
+              <button
+                className="btn p-3"
+                onClick={() => setQuantity((prev) => prev + 1)}
+              >
                 <img src={plus} alt="多一個" />
               </button>
             </div>
@@ -247,7 +242,6 @@ const Cart = () => {
               <ul className="list-unstyled p-5 border border-4 border-secondary-300 rounded-3">
                 {cartList.map((item, index) => {
                   return (
-
                     <li
                       className={`d-flex align-items-center ${index !== cartList.length - 1 ? "border-bottom" : ""} gap-5 py-5 px-8`}
                       key={item.id}
@@ -259,7 +253,11 @@ const Cart = () => {
                       />
                       <div style={{ width: 218 }}>
                         <p className="fw-bold fs-7">
-                          {item.title}（{item.size?.inchs ? item.size?.inchs : item.selectedOptions?.size?.name}）
+                          {item.title}（
+                          {item.size?.inchs
+                            ? item.size?.inchs
+                            : item.selectedOptions?.size?.name}
+                          ）
                         </p>
                         {item.selectedOptions && (
                           <p>
@@ -279,30 +277,45 @@ const Cart = () => {
                         style={{ width: 180 }}
                       >
                         <div className="input-group my-2 justify-content-center">
-                          <button className="btn p-3"
-                          onClick={() => handleQtyChange(item, item.quantity - 1)}>
+                          <button
+                            className="btn p-3"
+                            onClick={() =>
+                              handleQtyChange(item, item.quantity - 1)
+                            }
+                          >
                             <img src={minus} alt="少一個" />
                           </button>
                           <input
                             type="text"
                             value={item.quantity}
                             className="quantity-input section-title fs-5"
-                            onChange={(e)=>updateCart(item, Number(e.target.value))}
+                            onChange={(e) =>
+                              updateCart(item, Number(e.target.value))
+                            }
                             style={{ width: 68 }}
                           />
-                          <button className="btn p-3"
-                          onClick={() => handleQtyChange(item, item.quantity + 1)}>
+                          <button
+                            className="btn p-3"
+                            onClick={() =>
+                              handleQtyChange(item, item.quantity + 1)
+                            }
+                          >
                             <img src={plus} alt="多一個" />
                           </button>
                         </div>
                       </div>
 
                       <h5 className="text-primary section-title">
-                        NT${item.quantity*item.totalPrice
-                        ?item.quantity*item.totalPrice
-                        :item.quantity*item.size?.price}
+                        NT$
+                        {item.quantity * item.totalPrice
+                          ? item.quantity * item.totalPrice
+                          : item.quantity * item.size?.price}
                       </h5>
-                      <button className="nonstyle-button" type="button" onClick={() => deletCart(item.id)}>
+                      <button
+                        className="nonstyle-button"
+                        type="button"
+                        onClick={() => deletCart(item.id)}
+                      >
                         <img src={trashcan} alt="delet" />
                       </button>
                     </li>
@@ -326,24 +339,27 @@ const Cart = () => {
                 </ul>
                 <div className="d-flex justify-content-between align-items-center mt-2 mb-5">
                   <p className="fs-8">應付金額</p>
-                  <p className="fs-5 text-primary section-title">NT$ {finalTotal + shippingFee}</p>
+                  <p className="fs-5 text-primary section-title">
+                    NT$ {finalTotal + shippingFee}
+                  </p>
                 </div>
                 <button
                   className="btn-filled-primary"
-                  style={{width: 258}}
+                  style={{ width: 258 }}
                   type="button"
                   onClick={handleCheckout}
-                  disabled={loading===true}
+                  disabled={loading === true}
                 >
-                {
-                  loading===true?(
+                  {loading === true ? (
                     <ProgressBar
-                    visible={true}
-                    height="48"
-                    width="80"
-                    barColor="#ed4709"
-                    />):("確認付款")
-                }
+                      visible={true}
+                      height="48"
+                      width="80"
+                      barColor="#ed4709"
+                    />
+                  ) : (
+                    "確認付款"
+                  )}
                 </button>
               </div>
             </div>
@@ -351,9 +367,11 @@ const Cart = () => {
         </div>
         {/* 手機版  */}
         {cartList.map((item, index) => {
-
           return (
-            <ul className="container text-center list-unstyled -0 d-lg-none" key={index}>
+            <ul
+              className="container text-center list-unstyled -0 d-lg-none"
+              key={index}
+            >
               <li
                 className={`${index !== cartList.length - 1 ? "border-bottom" : ""} pt-3 pb-5 px-3`}
               >
@@ -366,24 +384,29 @@ const Cart = () => {
                   />
                   <div>
                     <p className="fw-bold fs-7 text-start">
-                      {item.title}（{item.size?.inchs ? item.size?.inchs : item.selectedOptions?.size?.name}）
+                      {item.title}（
+                      {item.size?.inchs
+                        ? item.size?.inchs
+                        : item.selectedOptions?.size?.name}
+                      ）
                     </p>
                     {item.selectedOptions && (
-                          <p className="text-start">
-                            {[
-                              item.selectedOptions.sauce?.name,
-                              item.selectedOptions.crust?.name,
-                              item.selectedOptions.cheese?.name,
-                              item.selectedOptions.combo?.name,
-                            ]
-                              .filter(Boolean)
-                              .join(" / ")}
-                          </p>
-                        )}
+                      <p className="text-start">
+                        {[
+                          item.selectedOptions.sauce?.name,
+                          item.selectedOptions.crust?.name,
+                          item.selectedOptions.cheese?.name,
+                          item.selectedOptions.combo?.name,
+                        ]
+                          .filter(Boolean)
+                          .join(" / ")}
+                      </p>
+                    )}
                     <h5 className="text-primary section-title text-start">
-                      NT${item.quantity*item.totalPrice
-                        ?item.quantity*item.totalPrice
-                        :item.quantity*item.size?.price}
+                      NT$
+                      {item.quantity * item.totalPrice
+                        ? item.quantity * item.totalPrice
+                        : item.quantity * item.size?.price}
                     </h5>
                   </div>
                 </div>
@@ -391,8 +414,11 @@ const Cart = () => {
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="border border-2 border-primary rounded-pill">
                     <div className="input-group my-2 justify-content-center">
-                      <button type="button" className="btn p-3"
-                      onClick={() => handleQtyChange(item, item.quantity - 1)}>
+                      <button
+                        type="button"
+                        className="btn p-3"
+                        onClick={() => handleQtyChange(item, item.quantity - 1)}
+                      >
                         <img src={minus} alt="少一個" />
                       </button>
                       <input
@@ -400,22 +426,28 @@ const Cart = () => {
                         value={item.quantity}
                         className="quantity-input section-title fs-5"
                         style={{ width: 139 }}
-                        onChange={(e)=>updateCart(item, Number(e.target.value))}
+                        onChange={(e) =>
+                          updateCart(item, Number(e.target.value))
+                        }
                       />
-                      <button className="btn p-3"
-                      onClick={() => handleQtyChange(item, item.quantity + 1)}>
+                      <button
+                        className="btn p-3"
+                        onClick={() => handleQtyChange(item, item.quantity + 1)}
+                      >
                         <img src={plus} alt="多一個" />
                       </button>
                     </div>
                   </div>
-                  <button className="btn btn-outline-primary rounded-circle shop-btn"
-                  onClick={() => deletCart(item.id)}>
+                  <button
+                    className="btn btn-outline-primary rounded-circle shop-btn"
+                    onClick={() => deletCart(item.id)}
+                  >
                     <img src={redDelet} alt="delete" />
                   </button>
                 </div>
               </li>
             </ul>
-          )
+          );
         })}
       </section>
 
@@ -457,7 +489,6 @@ const Cart = () => {
                 <PopProductCard popItem={popItem} />
               </SwiperSlide>
             ))}
-
           </Swiper>
           <button
             className="swiper-button-prev btn-filled-primary rounded-circle shop-btn button-left me-3 me-sm-0"
@@ -494,7 +525,9 @@ const Cart = () => {
                 </span>
               </button>
             </div>
-            <div className="fs-5 text-primary section-title">NT$ {finalTotal + shippingFee}</div>
+            <div className="fs-5 text-primary section-title">
+              NT$ {finalTotal + shippingFee}
+            </div>
           </div>
 
           {/* 收合內容佔滿版 */}
@@ -517,17 +550,18 @@ const Cart = () => {
             style={{ width: "100%" }}
             type="button"
             onClick={handleCheckout}
-            disabled={loading===true}
+            disabled={loading === true}
           >
-            {
-                  loading===true?(
-                    <ProgressBar
-                    visible={true}
-                    height="48"
-                    width="80"
-                    barColor="#ed4709"
-                    />):("確認付款")
-                }
+            {loading === true ? (
+              <ProgressBar
+                visible={true}
+                height="48"
+                width="80"
+                barColor="#ed4709"
+              />
+            ) : (
+              "確認付款"
+            )}
           </button>
         </div>
       </div>
