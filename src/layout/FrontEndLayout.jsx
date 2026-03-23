@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, ScrollRestoration } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import logoSmall from "../assets/images/logo-small.png";
 import whiteLogo from "../assets/images/logo-110-112.png";
 import userSelfie from "../assets/images/user-selfie.png";
 import axios from "axios";
-// import Swal from "sweetalert2";
 
 const FrontEndLayout = () => {
   // 登入狀態管理
@@ -285,7 +284,7 @@ const FrontEndLayout = () => {
       )}
       <main>
         {/* 用context 而不是 props 傳遞資料 */}
-        <Outlet context={[isAuth, setIsAuth]} />
+        <Outlet context={[setIsAuth]} />
       </main>
       <footer className="container-fluid bg-primary py-8 rounded-top-5">
         <div className="container text-center">
@@ -339,6 +338,8 @@ const FrontEndLayout = () => {
           </ul>
         </div>
       </footer>
+      {/* 關鍵：放在這裡，每次路徑改變都會自動回到頂部 */}
+      <ScrollRestoration />
     </>
   );
 };

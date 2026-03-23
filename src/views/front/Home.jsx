@@ -292,7 +292,7 @@ const Home = () => {
           {/* <!-- step-1 --> */}
           <div className="container-fluid px-0 mb-8">
             <div className="row">
-              <div className="col-12 col-md-6 text-center position-relative">
+              <div className="col-md-6 text-center position-relative">
                 <div className="rounded-circle bg-primary step-num">
                   <h3 className="section-title fs-2 fs-lg-1 lh-1 text-white">
                     1
@@ -312,7 +312,7 @@ const Home = () => {
           {/* <!-- step-2 --> */}
           <div className="container-fluid px-0 mb-8">
             <div className="row">
-              <div className="col-12 col-md-6 text-center position-relative ms-auto">
+              <div className="col-md-6 text-center position-relative ms-auto">
                 <div className="rounded-circle bg-primary step-num">
                   <h3 className="section-title fs-2 fs-lg-1 lh-1 text-white">
                     2
@@ -332,7 +332,7 @@ const Home = () => {
           {/* <!-- step-3 --> */}
           <div className="container-fluid px-0 mb-8">
             <div className="row">
-              <div className="col-12 col-md-6 text-center position-relative">
+              <div className="col-md-6 text-center position-relative">
                 <div className="rounded-circle bg-primary step-num">
                   <h3 className="section-title fs-2 fs-lg-1 lh-1 text-white">
                     3
@@ -352,7 +352,7 @@ const Home = () => {
           {/* <!-- step-4 --> */}
           <div className="container-fluid px-0">
             <div className="row">
-              <div className="col-12 col-md-6 text-center position-relative ms-auto">
+              <div className="col-md-6 text-center position-relative ms-auto">
                 <div className="rounded-circle bg-primary step-num">
                   <h3 className="section-title fs-2 fs-lg-1 lh-1 text-white">
                     4
