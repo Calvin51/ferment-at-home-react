@@ -8,7 +8,7 @@ import pizzaCustomerized from "../../assets/images/pizza-customerized.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-// import { Link } from "react-router-dom";
+
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const productImages = {
@@ -23,6 +23,7 @@ const productImages = {
 const OrderDetails = () => {
   const [detail, setDetail] = useState(null);
   const [orderProduct, setOrderProduct] = useState([]);
+  const [error, setError] = useState(null)
   const { id } = useParams();
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const OrderDetails = () => {
         setDetail(res.data);
         setOrderProduct(res.data.products);
       } catch (error) {
-        console.log(error.message);
+        setError(error.message || "取得購物車失敗");
       }
     };
     if (id) {
@@ -42,14 +43,8 @@ const OrderDetails = () => {
 
   return (
     <section className="container-fluid text-center mt-lg-10 mt-6 mb-lg-11">
-      {/* 標題 */}
+      {error && <p>{error}</p>}
       <div className="container mt-11 position-relative">
-        {/* <Link
-                    to="/checkout"
-                    className="position-absolute start-0 top-50 d-flex align-items-center text-decoration-none text-dark">
-                    <span className="fs-8">←</span>
-                    <span className="fs-8 d-none d-lg-inline">回到訂單列表</span>
-                </Link> */}
 
         <h2 className="section-title fs-2 fs-lg-1 text-primary text-center">
           Order Details
@@ -125,6 +120,7 @@ const OrderDetails = () => {
           </div>
           <ul className="list-unstyled">
             {orderProduct.map((product) => {
+
               return (
                 <li
                   className="d-flex align-items-center gap-5"

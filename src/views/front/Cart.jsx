@@ -22,7 +22,6 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { ProgressBar } from "react-loader-spinner";
 
-// const API_BASE = "https://ferment-at-home-data.onrender.com/";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const productImages = {
   夏威夷披薩: pizzaHawaii,
@@ -37,6 +36,7 @@ const shippingFee = 100;
 const Cart = () => {
   const [cartList, setCartList] = useState([]);
   const [popList, setPopList] = useState([]);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -47,6 +47,7 @@ const Cart = () => {
 
     setTimeout(() => {
       navigate("/checkout");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }, 500);
   };
   useEffect(() => {
@@ -54,8 +55,9 @@ const Cart = () => {
       try {
         const res = await axios.get(`${API_BASE}cart`);
         setCartList(res.data);
+        setError(null);
       } catch (error) {
-        console.log(error.message);
+        setError(error.message || "取得購物車失敗");
       }
     };
     getCart();
@@ -63,10 +65,9 @@ const Cart = () => {
     const getPopProduct = async () => {
       try {
         const res = await axios.get(`${API_BASE}popular_Product`);
-        // console.log(res.data);
         setPopList(res.data);
       } catch (error) {
-        console.log(error.message);
+        setError(error.message || "取得熱門商品失敗");
       }
     };
     getPopProduct();
@@ -78,12 +79,11 @@ const Cart = () => {
         ...item,
         quantity: qty,
       };
-      const res = await axios.put(`${API_BASE}cart/${item.id}`, updatedItem);
-      console.log(res.data);
+      const _res = await axios.put(`${API_BASE}cart/${item.id}`, updatedItem);
       const response = await axios.get(`${API_BASE}cart`);
       setCartList(response.data);
     } catch (error) {
-      console.log(error.message);
+      setError(error.message || "更新購物車失敗");
     }
   };
 
@@ -96,7 +96,7 @@ const Cart = () => {
 
     setCartList(newCart);
 
-    updateCart(item, safeQty); // 再同步資料庫
+    updateCart(item, safeQty);
   };
 
   const addCart = async (popItem, quantity, selectedSize) => {
@@ -112,26 +112,25 @@ const Cart = () => {
     };
     try {
       const res = await axios.post(`${API_BASE}cart`, cartData);
-      setCartList((prev) => [...prev, res.data]); // 更新畫面
+      setCartList((prev) => [...prev, res.data]); 
       Swal.fire({
         title: popItem.title,
         text: "成功加入購物車!",
         icon: "success",
       });
     } catch (error) {
-      console.log(error.message);
+      setError(error.message || "加入購物車失敗");
     }
   };
 
   const deletCart = async (cartId) => {
     try {
-      const res = await axios.delete(`${API_BASE}cart/${cartId}`);
-      console.log(res.data);
+      const _res = await axios.delete(`${API_BASE}cart/${cartId}`);
       const response = await axios.get(`${API_BASE}cart`);
       setCartList(response.data);
       Swal.fire("成功刪除產品！");
     } catch (error) {
-      console.log(error.message);
+      setError(error.message || "刪除商品失敗");
     }
   };
 
@@ -173,11 +172,10 @@ const Cart = () => {
           {popItem.size.map((sizeItem) => (
             <button
               key={sizeItem.id}
-              className={`sizeChoose btn fs-8 ${
-                selectedSize?.id === sizeItem.id
+              className={`sizeChoose btn fs-8 ${selectedSize?.id === sizeItem.id
                   ? "btn-gray-700"
                   : "btn-gray-100"
-              }`}
+                }`}
               onClick={() => setSelectedSize(sizeItem)}
             >
               {sizeItem.inchs}
@@ -226,6 +224,7 @@ const Cart = () => {
 
   return (
     <>
+      {error && <p>{error}</p>}
       <section className="container-fluid text-center mt-lg-10 mt-6 mb-lg-11">
         {/* 標題 */}
         <div className="mb-lg-11 mb-5">

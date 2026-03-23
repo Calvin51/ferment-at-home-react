@@ -46,7 +46,7 @@ const Checkout = () => {
       } catch (err) {
         setCart(err.res.data);
       } finally {
-        setCartLoading(false); // ← 加這行
+        setCartLoading(false); 
       }
     };
     apiCart();
@@ -222,14 +222,15 @@ const Checkout = () => {
         orderPaidAt: new Date()
           ?.toLocaleString("zh-TW", { hour12: false })
           .replace(/\//g, "-"),
-        products: cart.map((item) => ({
-          id: item.id,
-          name: item.title,
-          size: item.size?.inchs || item.selectedOptions?.size?.name,
-          price: Number(item.totalPrice),
-          qty: Number(item.quantity),
-          subtotal: Number(item.totalPrice) * Number(item.quantity),
-        })),
+        products: cart.map((item) => {
+          return{
+            id: item.id,
+            name: item.title,
+            size: item.size?.inchs || item.selectedOptions?.size?.name,
+            price: Number(item.totalPrice||item.size.price),
+            qty: Number(item.quantity),
+            subtotal: Number(item.totalPrice) * Number(item.quantity)}
+      }),
         customer: {
           name: `${data.lastName} ${data.firstName}`,
           email: data.email,
@@ -258,6 +259,7 @@ const Checkout = () => {
         draggable: true,
       });
       navigate(`/orderdetails/${newOrderId}`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e) {
       Swal.fire({
         title: "送出訂單失敗",
